@@ -227,9 +227,9 @@ class FinancialDataClient:
             query = (
                 self._db.table("sailing_filer_core")
                 .select("*")
-                .eq("state", state)
+                .eq("address_state", state)   # correct column: address_state not state
                 .neq("ein", own_ein)
-                .order("total_revenue", desc=True)
+                .order("cy_total_revenue_amt", desc=True)  # correct column: cy_total_revenue_amt not total_revenue
                 .limit(10)
             )
             if tax_year:
