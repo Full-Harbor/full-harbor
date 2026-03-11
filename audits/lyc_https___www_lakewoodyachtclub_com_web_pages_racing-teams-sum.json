@@ -1,0 +1,175 @@
+{
+  "url": "https://www.lakewoodyachtclub.com/web/pages/racing-teams-summer-2026",
+  "club_slug": "lyc",
+  "page_type": "racing",
+  "scraped_at": "2026-03-11T03:04:42.671990",
+  "score_summary": {
+    "found": 11,
+    "partial": 0,
+    "not_found": 9,
+    "total": 20,
+    "pct_found": 55
+  },
+  "questions": [
+    {
+      "question_id": 1,
+      "question": "Does my child need prior experience?",
+      "category": "eligibility",
+      "score": "\u2705",
+      "evidence": "...in confidence on the water. Tailored Training for All Levels From emerging racers to seasoned competitors, we...",
+      "notes": null
+    },
+    {
+      "question_id": 2,
+      "question": "What ages can attend?",
+      "category": "eligibility",
+      "score": "\u274c",
+      "evidence": null,
+      "notes": null
+    },
+    {
+      "question_id": 3,
+      "question": "Do we need to be members?",
+      "category": "eligibility",
+      "score": "\u2705",
+      "evidence": "...mber Charge Member Number: Submit Seahorse PAYPAL Non members may pay by credit card using the following LINK...",
+      "notes": null
+    },
+    {
+      "question_id": 4,
+      "question": "What does it cost? (pricing/fees)",
+      "category": "cost",
+      "score": "\u274c",
+      "evidence": null,
+      "notes": null
+    },
+    {
+      "question_id": 5,
+      "question": "Are there scholarships or financial aid?",
+      "category": "cost",
+      "score": "\u274c",
+      "evidence": null,
+      "notes": null
+    },
+    {
+      "question_id": 6,
+      "question": "What are the dates and schedule?",
+      "category": "logistics",
+      "score": "\u2705",
+      "evidence": "...weeks you will participate (Summer 2026) Week 1 (May 28-31) Week 2 (June 13-14) Week 3 (June 16-19) Week...",
+      "notes": null
+    },
+    {
+      "question_id": 7,
+      "question": "What does a typical day look like?",
+      "category": "logistics",
+      "score": "\u274c",
+      "evidence": null,
+      "notes": null
+    },
+    {
+      "question_id": 8,
+      "question": "Does my child need to know how to swim?",
+      "category": "safety",
+      "score": "\u274c",
+      "evidence": null,
+      "notes": null
+    },
+    {
+      "question_id": 9,
+      "question": "What should we bring / pack?",
+      "category": "logistics",
+      "score": "\u274c",
+      "evidence": null,
+      "notes": null
+    },
+    {
+      "question_id": 10,
+      "question": "Are the coaches certified?",
+      "category": "instruction",
+      "score": "\u274c",
+      "evidence": null,
+      "notes": null
+    },
+    {
+      "question_id": 11,
+      "question": "Who are the coaches / instructors?",
+      "category": "instruction",
+      "score": "\u2705",
+      "evidence": "...usly crafted curriculum that blends goal-oriented coaching with personalized development plans. Through close attention to each sailor\u2019s strengths, areas for growth, and...",
+      "notes": null
+    },
+    {
+      "question_id": 12,
+      "question": "What is the coach-to-student ratio?",
+      "category": "instruction",
+      "score": "\u2705",
+      "evidence": "..., race tactics, and mental resilience. With a low coach-to-sailor ratio, every participant receives detailed feedba...",
+      "notes": null
+    },
+    {
+      "question_id": 13,
+      "question": "What boats / equipment will they use?",
+      "category": "program",
+      "score": "\u2705",
+      "evidence": "...in to view the flyer\u00a0with all dates and pricing. Optimist Green Optimist RWB ILCA C420 Form Designer Du...",
+      "notes": null
+    },
+    {
+      "question_id": 14,
+      "question": "Is it safe? (safety information)",
+      "category": "safety",
+      "score": "\u2705",
+      "evidence": "...* Parent/Guardian phone number * Home Address: * Emergency Contact Name * Relationship: * Cell Phone: * C420...",
+      "notes": null
+    },
+    {
+      "question_id": 15,
+      "question": "What happens if the weather is bad?",
+      "category": "logistics",
+      "score": "\u2705",
+      "evidence": "...lub (281) 474-2511 [email\u00a0protected] Member Login Weather 75 \u00b0F broken clouds Login Untitled PAGE TITLE &am...",
+      "notes": null
+    },
+    {
+      "question_id": 16,
+      "question": "Can I watch my child?",
+      "category": "parent_experience",
+      "score": "\u274c",
+      "evidence": null,
+      "notes": null
+    },
+    {
+      "question_id": 17,
+      "question": "Can we try it / trial day?",
+      "category": "eligibility",
+      "score": "\u274c",
+      "evidence": null,
+      "notes": null
+    },
+    {
+      "question_id": 18,
+      "question": "How do I register?",
+      "category": "conversion",
+      "score": "\u2705",
+      "evidence": "...420 Form Designer DummyValue Seahorse SUMMER 2026 Registration Sailor's First Name Sailor's Last Name Date of Bi...",
+      "notes": null
+    },
+    {
+      "question_id": 19,
+      "question": "What is the cancellation / refund policy?",
+      "category": "logistics",
+      "score": "\u2705",
+      "evidence": "...your signature. How will you pay?\r\n*If paying by credit card, please use the PAYPAL Link below this form....",
+      "notes": null
+    },
+    {
+      "question_id": 20,
+      "question": "Is there a year-round program?",
+      "category": "program",
+      "score": "\u2705",
+      "evidence": "...the club at prestigious international events. Our year-round program provides structured training blocks, race...",
+      "notes": null
+    }
+  ]
+}

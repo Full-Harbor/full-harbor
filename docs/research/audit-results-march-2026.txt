@@ -1,0 +1,572 @@
+/Users/davidvalentine/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+
+Auditing LYC...
+  https://www.lakewoodyachtclub.com/web/pages/opti-camp-2026
+
+======================================================================
+PARENT EXPERIENCE AUDIT: LYC
+URL: https://www.lakewoodyachtclub.com/web/pages/opti-camp-2026
+======================================================================
+Score: 13/20 questions answered (65%) — Grade: C
+======================================================================
+
+  [ELIGIBILITY]
+  ❌  Q1: Does my child need prior experience?
+  ✅  Q2: What ages can attend?
+      → ...Optimist Camp: June 08 – 12, 2026 | Grades 2 – 8 (Ages 7–13) This year, we will not be running a ...
+  ✅  Q3: Do we need to be members?
+      → ...ants. Fees Optimist Camp: $740 (members) / $1000 (non-members) Late registration deadline: The de...
+  ❌  Q17: Can we try it / trial day?
+
+  [COST]
+  ✅  Q4: What does it cost? (pricing/fees)
+      → ...d FJs for older participants. Fees Optimist Camp: $740 (members) / $1000 (non-members) Late regis...
+  ✅  Q5: Are there scholarships or financial aid?
+      → ...ts on the water and pass a swim test (life jacket assistance allowed). Join us for a summer of sa...
+
+  [LOGISTICS]
+  ✅  Q6: What are the dates and schedule?
+      → ...sport. 2026 Camp Dates & Age Range Optimist Camp: June 08 – 12, 2026 | Grades 2 – 8 (Ages 7–13) T...
+  ❌  Q7: What does a typical day look like?
+  ✅  Q9: What should we bring / pack?
+      → ...to each group. Schedule: Monday–Friday, 9 AM–5 PM What to Bring Swimsuit, rash guard & shorts Buf...
+  ✅  Q15: What happens if the weather is bad?
+      → ...lub (281) 474-2511 [email protected] Member Login Weather 75 °F broken clouds Login Untitled PAGE...
+  ✅  Q19: What is the cancellation / refund policy?
+      → ...: * Cell Phone * How will you pay?
+*If paying by credit card, please use the PAYPAL Link below t...
+
+  [SAFETY]
+  ✅  Q8: Does my child need to know how to swim?
+      → ...Schedule: Monday–Friday, 9 AM–5 PM What to Bring Swimsuit, rash guard & shorts Buff/gaiter to pro...
+  ✅  Q14: Is it safe? (safety information)
+      → ...to the feet – no flip-flops! Coast Guard approved life jacket with whistle attached Sunglasses Ha...
+
+  [INSTRUCTION]
+  ❌  Q10: Are the coaches certified?
+  ✅  Q11: Who are the coaches / instructors?
+      → ...and high-performance racing teams. Through expert coaching, structured development, and a support...
+  ❌  Q12: What is the coach-to-student ratio?
+
+  [PROGRAM]
+  ✅  Q13: What boats / equipment will they use?
+      → ...OPTI CAMP 2026 - Lakewood Yacht Club (281) 474-2511 [e......
+  ❌  Q20: Is there a year-round program?
+
+  [PARENT_EXPERIENCE]
+  ❌  Q16: Can I watch my child?
+
+  [CONVERSION]
+  ✅  Q18: How do I register?
+      → ...t Camp: $740 (members) / $1000 (non-members) Late registration deadline: The deadline for registr...
+  Saved: /tmp/full-harbor/audits/lyc_https___www_lakewoodyachtclub_com_web_pages_opti-camp-2026.json
+  https://www.lakewoodyachtclub.com/web/pages/learn-to-sail-summer-2026
+
+======================================================================
+PARENT EXPERIENCE AUDIT: LYC
+URL: https://www.lakewoodyachtclub.com/web/pages/learn-to-sail-summer-2026
+======================================================================
+Score: 13/20 questions answered (65%) — Grade: C
+======================================================================
+
+  [ELIGIBILITY]
+  ✅  Q1: Does my child need prior experience?
+      → ...d derigging, and having fun in boats. Experience: No experience required.  With our tailor-made t...
+  ❌  Q2: What ages can attend?
+  ✅  Q3: Do we need to be members?
+      → ...d registration: LYC Member price: $220 (per week) Non-member price: $275 (per week) Registration ...
+  ❌  Q17: Can we try it / trial day?
+
+  [COST]
+  ✅  Q4: What does it cost? (pricing/fees)
+      → ...b. Course fee and registration: LYC Member price: $220 (per week) Non-member price: $275 (per wee...
+  ❌  Q5: Are there scholarships or financial aid?
+
+  [LOGISTICS]
+  ✅  Q6: What are the dates and schedule?
+      → ...al sailor lies among them… 2026 Calendar: Week 1: June 22 - June 26 (22 Mon - 23 Tue - 24 Wed - 2...
+  ✅  Q7: What does a typical day look like?
+      → ...Mon - 04 Tue - 05 Wed - 06 Thu - 07 Fri) Practice schedule: Monday to Friday from 09:00 am to 12:...
+  ✅  Q9: What should we bring / pack?
+      → ...Sea shoes (plastic sole – easy dry) Swimsuit Hat Sunscreen Towel Spare dry apparel Water bottle S...
+  ✅  Q15: What happens if the weather is bad?
+      → ...lub (281) 474-2511 [email protected] Member Login Weather 75 °F broken clouds Login Untitled PAGE...
+  ✅  Q19: What is the cancellation / refund policy?
+      → ...k 4 (August 3-7) How will you pay?
+*If paying by credit card, please use the PAYPAL Link below t...
+
+  [SAFETY]
+  ✅  Q8: Does my child need to know how to swim?
+      → ...it (Optional) Sea shoes (plastic sole – easy dry) Swimsuit Hat Sunscreen Towel Spare dry apparel ...
+  ✅  Q14: Is it safe? (safety information)
+      → ...ll operational action plans from risk analysis to emergency plans are made and we are ready for e...
+
+  [INSTRUCTION]
+  ❌  Q10: Are the coaches certified?
+  ✅  Q11: Who are the coaches / instructors?
+      → ...ide an ideal learning environment. Our passionate instructors, deeply connected to sailing and th...
+  ❌  Q12: What is the coach-to-student ratio?
+
+  [PROGRAM]
+  ✅  Q13: What boats / equipment will they use?
+      → ...ilor’s progress at the end of the session. Boats: Optimist boats will be used for “Learn to Sail”...
+  ❌  Q20: Is there a year-round program?
+
+  [PARENT_EXPERIENCE]
+  ❌  Q16: Can I watch my child?
+
+  [CONVERSION]
+  ✅  Q18: How do I register?
+      → ....  With our tailor-made training program, you can enroll for one or multiple weeks and progressiv...
+  Saved: /tmp/full-harbor/audits/lyc_https___www_lakewoodyachtclub_com_web_pages_learn-to-sail-su.json
+  https://www.lakewoodyachtclub.com/web/pages/racing-teams-summer-2026
+
+======================================================================
+PARENT EXPERIENCE AUDIT: LYC
+URL: https://www.lakewoodyachtclub.com/web/pages/racing-teams-summer-2026
+======================================================================
+Score: 11/20 questions answered (55%) — Grade: C
+======================================================================
+
+  [ELIGIBILITY]
+  ✅  Q1: Does my child need prior experience?
+      → ...in confidence on the water. Tailored Training for All Levels From emerging racers to seasoned com...
+  ❌  Q2: What ages can attend?
+  ✅  Q3: Do we need to be members?
+      → ...mber Charge Member Number: Submit Seahorse PAYPAL Non members may pay by credit card using the fo...
+  ❌  Q17: Can we try it / trial day?
+
+  [COST]
+  ❌  Q4: What does it cost? (pricing/fees)
+  ❌  Q5: Are there scholarships or financial aid?
+
+  [LOGISTICS]
+  ✅  Q6: What are the dates and schedule?
+      → ...weeks you will participate (Summer 2026) Week 1 (May 28-31) Week 2 (June 13-14) Week 3 (June 16-1...
+  ❌  Q7: What does a typical day look like?
+  ❌  Q9: What should we bring / pack?
+  ✅  Q15: What happens if the weather is bad?
+      → ...lub (281) 474-2511 [email protected] Member Login Weather 75 °F broken clouds Login Untitled PAGE...
+  ✅  Q19: What is the cancellation / refund policy?
+      → ...your signature. How will you pay?
+*If paying by credit card, please use the PAYPAL Link below th...
+
+  [SAFETY]
+  ❌  Q8: Does my child need to know how to swim?
+  ✅  Q14: Is it safe? (safety information)
+      → ...* Parent/Guardian phone number * Home Address: * Emergency Contact Name * Relationship: * Cell Ph...
+
+  [INSTRUCTION]
+  ❌  Q10: Are the coaches certified?
+  ✅  Q11: Who are the coaches / instructors?
+      → ...usly crafted curriculum that blends goal-oriented coaching with personalized development plans. T...
+  ✅  Q12: What is the coach-to-student ratio?
+      → ..., race tactics, and mental resilience. With a low coach-to-sailor ratio, every participant receiv...
+
+  [PROGRAM]
+  ✅  Q13: What boats / equipment will they use?
+      → ...in to view the flyer with all dates and pricing. Optimist Green Optimist RWB ILCA C420 Form Desig...
+  ✅  Q20: Is there a year-round program?
+      → ...the club at prestigious international events. Our year-round program provides structured training...
+
+  [PARENT_EXPERIENCE]
+  ❌  Q16: Can I watch my child?
+
+  [CONVERSION]
+  ✅  Q18: How do I register?
+      → ...420 Form Designer DummyValue Seahorse SUMMER 2026 Registration Sailor's First Name Sailor's Last ...
+  Saved: /tmp/full-harbor/audits/lyc_https___www_lakewoodyachtclub_com_web_pages_racing-teams-sum.json
+  https://www.lakewoodyachtclub.com/web/pages/youth-sailing1
+
+======================================================================
+PARENT EXPERIENCE AUDIT: LYC
+URL: https://www.lakewoodyachtclub.com/web/pages/youth-sailing1
+======================================================================
+Score: 5/20 questions answered (25%) — Grade: F
+======================================================================
+
+  [ELIGIBILITY]
+  ✅  Q1: Does my child need prior experience?
+      → ...rs exceptional opportunities for young sailors of all skill levels. Our Seahorses compete in the ...
+  ❌  Q2: What ages can attend?
+  ❌  Q3: Do we need to be members?
+  ❌  Q17: Can we try it / trial day?
+
+  [COST]
+  ❌  Q4: What does it cost? (pricing/fees)
+  ❌  Q5: Are there scholarships or financial aid?
+
+  [LOGISTICS]
+  ❌  Q6: What are the dates and schedule?
+  ❌  Q7: What does a typical day look like?
+  ❌  Q9: What should we bring / pack?
+  ✅  Q15: What happens if the weather is bad?
+      → ...lub (281) 474-2511 [email protected] Member Login Weather 75 °F broken clouds Login HTML Generato...
+  ❌  Q19: What is the cancellation / refund policy?
+
+  [SAFETY]
+  ❌  Q8: Does my child need to know how to swim?
+  ❌  Q14: Is it safe? (safety information)
+
+  [INSTRUCTION]
+  ❌  Q10: Are the coaches certified?
+  ✅  Q11: Who are the coaches / instructors?
+      → ...thing for every aspiring sailor. Led by dedicated coaches, our program has gained national recogn...
+  ❌  Q12: What is the coach-to-student ratio?
+
+  [PROGRAM]
+  ✅  Q13: What boats / equipment will they use?
+      → ...m: LEARN TO SAIL FALL 2025 RACING TEAMS FALL 2025 OPTI & SEAHORSE CAMP 2026 PROCEDURES & DOCUMENT...
+  ✅  Q20: Is there a year-round program?
+      → ...g our program one of the top in the country. With year-round programs—including summer sailing ca...
+
+  [PARENT_EXPERIENCE]
+  ❌  Q16: Can I watch my child?
+
+  [CONVERSION]
+  ❌  Q18: How do I register?
+  Saved: /tmp/full-harbor/audits/lyc_https___www_lakewoodyachtclub_com_web_pages_youth-sailing1.json
+
+Auditing HYC...
+  https://www.houstonyachtclub.com/summer-camps
+
+======================================================================
+PARENT EXPERIENCE AUDIT: HYC
+URL: https://www.houstonyachtclub.com/summer-camps
+======================================================================
+Score: 0/20 questions answered (0%) — Grade: F
+======================================================================
+
+  [ELIGIBILITY]
+  ❌  Q1: Does my child need prior experience?
+  ❌  Q2: What ages can attend?
+  ❌  Q3: Do we need to be members?
+  ❌  Q17: Can we try it / trial day?
+
+  [COST]
+  ❌  Q4: What does it cost? (pricing/fees)
+  ❌  Q5: Are there scholarships or financial aid?
+
+  [LOGISTICS]
+  ❌  Q6: What are the dates and schedule?
+  ❌  Q7: What does a typical day look like?
+  ❌  Q9: What should we bring / pack?
+  ❌  Q15: What happens if the weather is bad?
+  ❌  Q19: What is the cancellation / refund policy?
+
+  [SAFETY]
+  ❌  Q8: Does my child need to know how to swim?
+  ❌  Q14: Is it safe? (safety information)
+
+  [INSTRUCTION]
+  ❌  Q10: Are the coaches certified?
+  ❌  Q11: Who are the coaches / instructors?
+  ❌  Q12: What is the coach-to-student ratio?
+
+  [PROGRAM]
+  ❌  Q13: What boats / equipment will they use?
+  ❌  Q20: Is there a year-round program?
+
+  [PARENT_EXPERIENCE]
+  ❌  Q16: Can I watch my child?
+
+  [CONVERSION]
+  ❌  Q18: How do I register?
+  Saved: /tmp/full-harbor/audits/hyc_https___www_houstonyachtclub_com_summer-camps.json
+  https://www.houstonyachtclub.com/youth-program
+
+======================================================================
+PARENT EXPERIENCE AUDIT: HYC
+URL: https://www.houstonyachtclub.com/youth-program
+======================================================================
+Score: 0/20 questions answered (0%) — Grade: F
+======================================================================
+
+  [ELIGIBILITY]
+  ❌  Q1: Does my child need prior experience?
+  ❌  Q2: What ages can attend?
+  ❌  Q3: Do we need to be members?
+  ❌  Q17: Can we try it / trial day?
+
+  [COST]
+  ❌  Q4: What does it cost? (pricing/fees)
+  ❌  Q5: Are there scholarships or financial aid?
+
+  [LOGISTICS]
+  ❌  Q6: What are the dates and schedule?
+  ❌  Q7: What does a typical day look like?
+  ❌  Q9: What should we bring / pack?
+  ❌  Q15: What happens if the weather is bad?
+  ❌  Q19: What is the cancellation / refund policy?
+
+  [SAFETY]
+  ❌  Q8: Does my child need to know how to swim?
+  ❌  Q14: Is it safe? (safety information)
+
+  [INSTRUCTION]
+  ❌  Q10: Are the coaches certified?
+  ❌  Q11: Who are the coaches / instructors?
+  ❌  Q12: What is the coach-to-student ratio?
+
+  [PROGRAM]
+  ❌  Q13: What boats / equipment will they use?
+  ❌  Q20: Is there a year-round program?
+
+  [PARENT_EXPERIENCE]
+  ❌  Q16: Can I watch my child?
+
+  [CONVERSION]
+  ❌  Q18: How do I register?
+  Saved: /tmp/full-harbor/audits/hyc_https___www_houstonyachtclub_com_youth-program.json
+  https://www.houstonyachtclub.com/mini-sailing-progrm
+
+======================================================================
+PARENT EXPERIENCE AUDIT: HYC
+URL: https://www.houstonyachtclub.com/mini-sailing-progrm
+======================================================================
+Score: 0/20 questions answered (0%) — Grade: F
+======================================================================
+
+  [ELIGIBILITY]
+  ❌  Q1: Does my child need prior experience?
+  ❌  Q2: What ages can attend?
+  ❌  Q3: Do we need to be members?
+  ❌  Q17: Can we try it / trial day?
+
+  [COST]
+  ❌  Q4: What does it cost? (pricing/fees)
+  ❌  Q5: Are there scholarships or financial aid?
+
+  [LOGISTICS]
+  ❌  Q6: What are the dates and schedule?
+  ❌  Q7: What does a typical day look like?
+  ❌  Q9: What should we bring / pack?
+  ❌  Q15: What happens if the weather is bad?
+  ❌  Q19: What is the cancellation / refund policy?
+
+  [SAFETY]
+  ❌  Q8: Does my child need to know how to swim?
+  ❌  Q14: Is it safe? (safety information)
+
+  [INSTRUCTION]
+  ❌  Q10: Are the coaches certified?
+  ❌  Q11: Who are the coaches / instructors?
+  ❌  Q12: What is the coach-to-student ratio?
+
+  [PROGRAM]
+  ❌  Q13: What boats / equipment will they use?
+  ❌  Q20: Is there a year-round program?
+
+  [PARENT_EXPERIENCE]
+  ❌  Q16: Can I watch my child?
+
+  [CONVERSION]
+  ❌  Q18: How do I register?
+  Saved: /tmp/full-harbor/audits/hyc_https___www_houstonyachtclub_com_mini-sailing-progrm.json
+  https://www.houstonyachtclub.com/hyc-staff
+
+======================================================================
+PARENT EXPERIENCE AUDIT: HYC
+URL: https://www.houstonyachtclub.com/hyc-staff
+======================================================================
+Score: 0/20 questions answered (0%) — Grade: F
+======================================================================
+
+  [ELIGIBILITY]
+  ❌  Q1: Does my child need prior experience?
+  ❌  Q2: What ages can attend?
+  ❌  Q3: Do we need to be members?
+  ❌  Q17: Can we try it / trial day?
+
+  [COST]
+  ❌  Q4: What does it cost? (pricing/fees)
+  ❌  Q5: Are there scholarships or financial aid?
+
+  [LOGISTICS]
+  ❌  Q6: What are the dates and schedule?
+  ❌  Q7: What does a typical day look like?
+  ❌  Q9: What should we bring / pack?
+  ❌  Q15: What happens if the weather is bad?
+  ❌  Q19: What is the cancellation / refund policy?
+
+  [SAFETY]
+  ❌  Q8: Does my child need to know how to swim?
+  ❌  Q14: Is it safe? (safety information)
+
+  [INSTRUCTION]
+  ❌  Q10: Are the coaches certified?
+  ❌  Q11: Who are the coaches / instructors?
+  ❌  Q12: What is the coach-to-student ratio?
+
+  [PROGRAM]
+  ❌  Q13: What boats / equipment will they use?
+  ❌  Q20: Is there a year-round program?
+
+  [PARENT_EXPERIENCE]
+  ❌  Q16: Can I watch my child?
+
+  [CONVERSION]
+  ❌  Q18: How do I register?
+  Saved: /tmp/full-harbor/audits/hyc_https___www_houstonyachtclub_com_hyc-staff.json
+
+Auditing TCYC...
+  https://www.tcyc.org
+
+======================================================================
+PARENT EXPERIENCE AUDIT: TCYC
+URL: https://www.tcyc.org
+======================================================================
+Score: 0/20 questions answered (0%) — Grade: F
+======================================================================
+
+  [ELIGIBILITY]
+  ❌  Q1: Does my child need prior experience?
+  ❌  Q2: What ages can attend?
+  ❌  Q3: Do we need to be members?
+  ❌  Q17: Can we try it / trial day?
+
+  [COST]
+  ❌  Q4: What does it cost? (pricing/fees)
+  ❌  Q5: Are there scholarships or financial aid?
+
+  [LOGISTICS]
+  ❌  Q6: What are the dates and schedule?
+  ❌  Q7: What does a typical day look like?
+  ❌  Q9: What should we bring / pack?
+  ❌  Q15: What happens if the weather is bad?
+  ❌  Q19: What is the cancellation / refund policy?
+
+  [SAFETY]
+  ❌  Q8: Does my child need to know how to swim?
+  ❌  Q14: Is it safe? (safety information)
+
+  [INSTRUCTION]
+  ❌  Q10: Are the coaches certified?
+  ❌  Q11: Who are the coaches / instructors?
+  ❌  Q12: What is the coach-to-student ratio?
+
+  [PROGRAM]
+  ❌  Q13: What boats / equipment will they use?
+  ❌  Q20: Is there a year-round program?
+
+  [PARENT_EXPERIENCE]
+  ❌  Q16: Can I watch my child?
+
+  [CONVERSION]
+  ❌  Q18: How do I register?
+  Saved: /tmp/full-harbor/audits/tcyc_https___www_tcyc_org.json
+  https://www.tcyc.org/water/regattas
+
+======================================================================
+PARENT EXPERIENCE AUDIT: TCYC
+URL: https://www.tcyc.org/water/regattas
+======================================================================
+Score: 5/20 questions answered (25%) — Grade: F
+======================================================================
+
+  [ELIGIBILITY]
+  ❌  Q1: Does my child need prior experience?
+  ❌  Q2: What ages can attend?
+  ❌  Q3: Do we need to be members?
+  ❌  Q17: Can we try it / trial day?
+
+  [COST]
+  ❌  Q4: What does it cost? (pricing/fees)
+  ❌  Q5: Are there scholarships or financial aid?
+
+  [LOGISTICS]
+  ✅  Q6: What are the dates and schedule?
+      → ...rgency Action Plan Texas Shoot Out 2026 ~ Friday, March 27 - Sunday, March 29 2026 Race Documents...
+  ❌  Q7: What does a typical day look like?
+  ❌  Q9: What should we bring / pack?
+  ✅  Q15: What happens if the weather is bad?
+      → ...s Videos Women's Results Men's Results Incredible weather station from Pete Buckley Preview video...
+  ❌  Q19: What is the cancellation / refund policy?
+
+  [SAFETY]
+  ❌  Q8: Does my child need to know how to swim?
+  ✅  Q14: Is it safe? (safety information)
+      → ...Corinthian Yacht Club Menu Member Login Regattas Emergency Action Plan Texas Shoot Out 2026 ~ Fri...
+
+  [INSTRUCTION]
+  ❌  Q10: Are the coaches certified?
+  ❌  Q11: Who are the coaches / instructors?
+  ❌  Q12: What is the coach-to-student ratio?
+
+  [PROGRAM]
+  ✅  Q13: What boats / equipment will they use?
+      → ...2025 Texas Youth Race Week Texas Youth Race Week Opti Championship and Green Fleets REGATTA WEBSI...
+  ❌  Q20: Is there a year-round program?
+
+  [PARENT_EXPERIENCE]
+  ❌  Q16: Can I watch my child?
+
+  [CONVERSION]
+  ✅  Q18: How do I register?
+      → ...pionship and Green Fleets REGATTA WEBSITE REGATTA REGISTRATION RACE DOCUMENTS Texas Youth Race We...
+  Saved: /tmp/full-harbor/audits/tcyc_https___www_tcyc_org_water_regattas.json
+  https://www.tcyc.org/contact
+
+======================================================================
+PARENT EXPERIENCE AUDIT: TCYC
+URL: https://www.tcyc.org/contact
+======================================================================
+Score: 1/20 questions answered (5%) — Grade: F
+======================================================================
+
+  [ELIGIBILITY]
+  ❌  Q1: Does my child need prior experience?
+  ❌  Q2: What ages can attend?
+  ❌  Q3: Do we need to be members?
+  ❌  Q17: Can we try it / trial day?
+
+  [COST]
+  ❌  Q4: What does it cost? (pricing/fees)
+  ❌  Q5: Are there scholarships or financial aid?
+
+  [LOGISTICS]
+  ❌  Q6: What are the dates and schedule?
+  ❌  Q7: What does a typical day look like?
+  ❌  Q9: What should we bring / pack?
+  ❌  Q15: What happens if the weather is bad?
+  ❌  Q19: What is the cancellation / refund policy?
+
+  [SAFETY]
+  ❌  Q8: Does my child need to know how to swim?
+  ❌  Q14: Is it safe? (safety information)
+
+  [INSTRUCTION]
+  ❌  Q10: Are the coaches certified?
+  ✅  Q11: Who are the coaches / instructors?
+      → ...Steglich - General Manager Solvig Sayre - Sailing Director Gustavo Cisneros - Executive Chef Pam ...
+  ❌  Q12: What is the coach-to-student ratio?
+
+  [PROGRAM]
+  ❌  Q13: What boats / equipment will they use?
+  ❌  Q20: Is there a year-round program?
+
+  [PARENT_EXPERIENCE]
+  ❌  Q16: Can I watch my child?
+
+  [CONVERSION]
+  ❌  Q18: How do I register?
+  Saved: /tmp/full-harbor/audits/tcyc_https___www_tcyc_org_contact.json
+
+
+======================================================================
+FULL HARBOR AUDIT SUMMARY — ALL CLUBS
+======================================================================
+Club       URL                                                      Found  Total  Grade
+-------------------------------------------------------------------------------------
+lyc        lakewoodyachtclub.com/web/pages/opti-camp-2026              13     20      C
+lyc        lakewoodyachtclub.com/web/pages/learn-to-sail-summer-       13     20      C
+lyc        lakewoodyachtclub.com/web/pages/racing-teams-summer-2       11     20      C
+lyc        lakewoodyachtclub.com/web/pages/youth-sailing1               5     20      F
+hyc        houstonyachtclub.com/summer-camps                            0     20      F
+hyc        houstonyachtclub.com/youth-program                           0     20      F
+hyc        houstonyachtclub.com/mini-sailing-progrm                     0     20      F
+hyc        houstonyachtclub.com/hyc-staff                               0     20      F
+tcyc       tcyc.org                                                     0     20      F
+tcyc       tcyc.org/water/regattas                                      5     20      F
+tcyc       tcyc.org/contact                                             1     20      F

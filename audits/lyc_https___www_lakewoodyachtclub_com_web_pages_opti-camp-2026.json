@@ -1,0 +1,175 @@
+{
+  "url": "https://www.lakewoodyachtclub.com/web/pages/opti-camp-2026",
+  "club_slug": "lyc",
+  "page_type": "camp",
+  "scraped_at": "2026-03-11T03:04:40.610177",
+  "score_summary": {
+    "found": 13,
+    "partial": 0,
+    "not_found": 7,
+    "total": 20,
+    "pct_found": 65
+  },
+  "questions": [
+    {
+      "question_id": 1,
+      "question": "Does my child need prior experience?",
+      "category": "eligibility",
+      "score": "\u274c",
+      "evidence": null,
+      "notes": null
+    },
+    {
+      "question_id": 2,
+      "question": "What ages can attend?",
+      "category": "eligibility",
+      "score": "\u2705",
+      "evidence": "...Optimist Camp: June 08 \u2013 12, 2026 | Grades 2 \u2013 8 (Ages 7\u201313) This year, we will not be running a separate...",
+      "notes": null
+    },
+    {
+      "question_id": 3,
+      "question": "Do we need to be members?",
+      "category": "eligibility",
+      "score": "\u2705",
+      "evidence": "...ants. Fees Optimist Camp: $740 (members) / $1000 (non-members) Late registration deadline: The deadline for re...",
+      "notes": null
+    },
+    {
+      "question_id": 4,
+      "question": "What does it cost? (pricing/fees)",
+      "category": "cost",
+      "score": "\u2705",
+      "evidence": "...d\u00a0FJs for older participants. Fees Optimist Camp: $740 (members) / $1000 (non-members) Late registration...",
+      "notes": null
+    },
+    {
+      "question_id": 5,
+      "question": "Are there scholarships or financial aid?",
+      "category": "cost",
+      "score": "\u2705",
+      "evidence": "...ts on the water and pass a swim test (life jacket assistance allowed). Join us for a summer of sailing, discov...",
+      "notes": null
+    },
+    {
+      "question_id": 6,
+      "question": "What are the dates and schedule?",
+      "category": "logistics",
+      "score": "\u2705",
+      "evidence": "...sport. 2026 Camp Dates & Age Range Optimist Camp: June 08 \u2013 12, 2026 | Grades 2 \u2013 8 (Ages 7\u201313) This year,...",
+      "notes": null
+    },
+    {
+      "question_id": 7,
+      "question": "What does a typical day look like?",
+      "category": "logistics",
+      "score": "\u274c",
+      "evidence": null,
+      "notes": null
+    },
+    {
+      "question_id": 8,
+      "question": "Does my child need to know how to swim?",
+      "category": "safety",
+      "score": "\u2705",
+      "evidence": "...Schedule:\u00a0Monday\u2013Friday, 9 AM\u20135 PM What to Bring Swimsuit, rash guard & shorts Buff/gaiter to provide s...",
+      "notes": null
+    },
+    {
+      "question_id": 9,
+      "question": "What should we bring / pack?",
+      "category": "logistics",
+      "score": "\u2705",
+      "evidence": "...to each group. Schedule:\u00a0Monday\u2013Friday, 9 AM\u20135 PM What to Bring Swimsuit, rash guard & shorts Buff/gaiter to prov...",
+      "notes": null
+    },
+    {
+      "question_id": 10,
+      "question": "Are the coaches certified?",
+      "category": "instruction",
+      "score": "\u274c",
+      "evidence": null,
+      "notes": null
+    },
+    {
+      "question_id": 11,
+      "question": "Who are the coaches / instructors?",
+      "category": "instruction",
+      "score": "\u2705",
+      "evidence": "...and high-performance racing teams. Through expert coaching, structured development, and a supportive community, Lakewood Yacht Club ensures that every sailor\u2014wh...",
+      "notes": null
+    },
+    {
+      "question_id": 12,
+      "question": "What is the coach-to-student ratio?",
+      "category": "instruction",
+      "score": "\u274c",
+      "evidence": null,
+      "notes": null
+    },
+    {
+      "question_id": 13,
+      "question": "What boats / equipment will they use?",
+      "category": "program",
+      "score": "\u2705",
+      "evidence": "...OPTI CAMP 2026 - Lakewood Yacht Club (281) 474-2511 [e...",
+      "notes": null
+    },
+    {
+      "question_id": 14,
+      "question": "Is it safe? (safety information)",
+      "category": "safety",
+      "score": "\u2705",
+      "evidence": "...to the feet \u2013 no flip-flops! Coast Guard approved life jacket with whistle attached Sunglasses Hat Towel Sunscr...",
+      "notes": null
+    },
+    {
+      "question_id": 15,
+      "question": "What happens if the weather is bad?",
+      "category": "logistics",
+      "score": "\u2705",
+      "evidence": "...lub (281) 474-2511 [email\u00a0protected] Member Login Weather 75 \u00b0F broken clouds Login Untitled PAGE TITLE &am...",
+      "notes": null
+    },
+    {
+      "question_id": 16,
+      "question": "Can I watch my child?",
+      "category": "parent_experience",
+      "score": "\u274c",
+      "evidence": null,
+      "notes": null
+    },
+    {
+      "question_id": 17,
+      "question": "Can we try it / trial day?",
+      "category": "eligibility",
+      "score": "\u274c",
+      "evidence": null,
+      "notes": null
+    },
+    {
+      "question_id": 18,
+      "question": "How do I register?",
+      "category": "conversion",
+      "score": "\u2705",
+      "evidence": "...t Camp: $740 (members) / $1000 (non-members) Late registration deadline: The deadline for registration is 10 day...",
+      "notes": null
+    },
+    {
+      "question_id": 19,
+      "question": "What is the cancellation / refund policy?",
+      "category": "logistics",
+      "score": "\u2705",
+      "evidence": "...: * Cell Phone * How will you pay?\r\n*If paying by credit card, please use the PAYPAL Link below this form....",
+      "notes": null
+    },
+    {
+      "question_id": 20,
+      "question": "Is there a year-round program?",
+      "category": "program",
+      "score": "\u274c",
+      "evidence": null,
+      "notes": null
+    }
+  ]
+}

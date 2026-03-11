@@ -1,0 +1,175 @@
+{
+  "url": "https://www.lakewoodyachtclub.com/web/pages/learn-to-sail-summer-2026",
+  "club_slug": "lyc",
+  "page_type": "camp",
+  "scraped_at": "2026-03-11T03:04:41.662166",
+  "score_summary": {
+    "found": 13,
+    "partial": 0,
+    "not_found": 7,
+    "total": 20,
+    "pct_found": 65
+  },
+  "questions": [
+    {
+      "question_id": 1,
+      "question": "Does my child need prior experience?",
+      "category": "eligibility",
+      "score": "\u2705",
+      "evidence": "...d derigging, and having fun in boats. Experience: No experience required. \u00a0With our tailor-made training program,...",
+      "notes": null
+    },
+    {
+      "question_id": 2,
+      "question": "What ages can attend?",
+      "category": "eligibility",
+      "score": "\u274c",
+      "evidence": null,
+      "notes": null
+    },
+    {
+      "question_id": 3,
+      "question": "Do we need to be members?",
+      "category": "eligibility",
+      "score": "\u2705",
+      "evidence": "...d registration: LYC Member price: $220\u00a0(per week) Non-member price: $275\u00a0(per week) Registration for multiple...",
+      "notes": null
+    },
+    {
+      "question_id": 4,
+      "question": "What does it cost? (pricing/fees)",
+      "category": "cost",
+      "score": "\u2705",
+      "evidence": "...b. Course fee and registration: LYC Member price: $220\u00a0(per week) Non-member price: $275\u00a0(per week) Regi...",
+      "notes": null
+    },
+    {
+      "question_id": 5,
+      "question": "Are there scholarships or financial aid?",
+      "category": "cost",
+      "score": "\u274c",
+      "evidence": null,
+      "notes": null
+    },
+    {
+      "question_id": 6,
+      "question": "What are the dates and schedule?",
+      "category": "logistics",
+      "score": "\u2705",
+      "evidence": "...al sailor lies among them\u2026 2026 Calendar: Week 1: June 22 - June 26 (22 Mon - 23\u00a0Tue - 24 Wed - 25 Thu - 26...",
+      "notes": null
+    },
+    {
+      "question_id": 7,
+      "question": "What does a typical day look like?",
+      "category": "logistics",
+      "score": "\u2705",
+      "evidence": "...Mon - 04 Tue - 05 Wed - 06 Thu - 07 Fri) Practice schedule: Monday to Friday from 09:00 am to 12:00 pm Age groups: 6 - 10\u00a0years of age Curriculum: Curriculum includes sailing and trimming at different points of sail,...",
+      "notes": null
+    },
+    {
+      "question_id": 8,
+      "question": "Does my child need to know how to swim?",
+      "category": "safety",
+      "score": "\u2705",
+      "evidence": "...it (Optional) Sea shoes (plastic sole \u2013 easy dry) Swimsuit Hat Sunscreen Towel Spare dry apparel Water b...",
+      "notes": null
+    },
+    {
+      "question_id": 9,
+      "question": "What should we bring / pack?",
+      "category": "logistics",
+      "score": "\u2705",
+      "evidence": "...Sea shoes (plastic sole \u2013 easy dry) Swimsuit Hat Sunscreen Towel Spare dry apparel Water bottle Sunglasses (...",
+      "notes": null
+    },
+    {
+      "question_id": 10,
+      "question": "Are the coaches certified?",
+      "category": "instruction",
+      "score": "\u274c",
+      "evidence": null,
+      "notes": null
+    },
+    {
+      "question_id": 11,
+      "question": "Who are the coaches / instructors?",
+      "category": "instruction",
+      "score": "\u2705",
+      "evidence": "...ide an ideal learning environment. Our passionate instructors, deeply connected to sailing and the sea, have guided many young enthusiasts in the past and eagerly anticip...",
+      "notes": null
+    },
+    {
+      "question_id": 12,
+      "question": "What is the coach-to-student ratio?",
+      "category": "instruction",
+      "score": "\u274c",
+      "evidence": null,
+      "notes": null
+    },
+    {
+      "question_id": 13,
+      "question": "What boats / equipment will they use?",
+      "category": "program",
+      "score": "\u2705",
+      "evidence": "...ilor\u2019s progress at the end of the session. Boats: Optimist boats will be used for \u201cLearn to Sail\u201d progra...",
+      "notes": null
+    },
+    {
+      "question_id": 14,
+      "question": "Is it safe? (safety information)",
+      "category": "safety",
+      "score": "\u2705",
+      "evidence": "...ll operational action plans from risk analysis to emergency plans are made and we are ready for every kind of...",
+      "notes": null
+    },
+    {
+      "question_id": 15,
+      "question": "What happens if the weather is bad?",
+      "category": "logistics",
+      "score": "\u2705",
+      "evidence": "...lub (281) 474-2511 [email\u00a0protected] Member Login Weather 75 \u00b0F broken clouds Login Untitled PAGE TITLE &am...",
+      "notes": null
+    },
+    {
+      "question_id": 16,
+      "question": "Can I watch my child?",
+      "category": "parent_experience",
+      "score": "\u274c",
+      "evidence": null,
+      "notes": null
+    },
+    {
+      "question_id": 17,
+      "question": "Can we try it / trial day?",
+      "category": "eligibility",
+      "score": "\u274c",
+      "evidence": null,
+      "notes": null
+    },
+    {
+      "question_id": 18,
+      "question": "How do I register?",
+      "category": "conversion",
+      "score": "\u2705",
+      "evidence": ".... \u00a0With our tailor-made training program, you can enroll for one or multiple weeks and progressively build...",
+      "notes": null
+    },
+    {
+      "question_id": 19,
+      "question": "What is the cancellation / refund policy?",
+      "category": "logistics",
+      "score": "\u2705",
+      "evidence": "...k 4 (August 3-7) How will you pay?\r\n*If paying by credit card, please use the PAYPAL Link below this form....",
+      "notes": null
+    },
+    {
+      "question_id": 20,
+      "question": "Is there a year-round program?",
+      "category": "program",
+      "score": "\u274c",
+      "evidence": null,
+      "notes": null
+    }
+  ]
+}
