@@ -17,19 +17,25 @@ The calculator makes the invisible visible — for funders, boards, and equity
 advocates who want to understand the true cost of running a sailing program.
 
 Usage:
-  python quiet_yield.py --club lyc --report
+  python quiet_yield.py --club lyc
+  python quiet_yield.py --club all
   python quiet_yield.py --custom  (interactive mode)
   python quiet_yield.py --compare-all --state TX
+  python quiet_yield.py --club lyc --bls-api  (fetch live BLS wages)
 
 BLS OEWS API: https://www.bls.gov/developers/api_faqs.htm
 API Key: free, register at https://data.bls.gov/registrationEngine/
 """
+from __future__ import annotations
 
+import logging
 import os
 import json
 import requests
 from dataclasses import dataclass, field, asdict
 from typing import Optional
+
+logger = logging.getLogger(__name__)
 
 
 # ---------------------------------------------------------------------------
@@ -138,6 +144,112 @@ BLS_BENCHMARKS: dict[str, BLSBenchmark] = {
         median_annual=216_000,
     ),
 }
+
+# BLS OEWS series ID for median hourly wage by SOC code.
+# Format: OEU + SOC (no dash) + 0000000003  (field code 3 = median hourly)
+_SOC_TO_SERIES: dict[str, str] = {
+    bm.soc_code: f"OEU{bm.soc_code.replace('-', '')}0000000003"
+    for bm in BLS_BENCHMARKS.values()
+}
+
+
+# ---------------------------------------------------------------------------
+# BLS API integration
+# ---------------------------------------------------------------------------
+
+BLS_API_URL = "https://api.bls.gov/publicAPI/v2/timeseries/data/"
+
+
+def fetch_bls_median_hourly(
+    soc_code: str,
+    api_key: Optional[str] = None,
+    year: int = 2024,
+) -> Optional[float]:
+    """
+    Fetch the median hourly wage for a SOC code from the BLS OEWS public API.
+
+    Returns None if the API is unavailable or the series is not found,
+    allowing callers to fall back to hardcoded May 2024 values.
+
+    Args:
+        soc_code: BLS Standard Occupational Classification code (e.g. "13-1121").
+        api_key: BLS API registration key (optional — raises rate limits).
+        year: The survey year to request (default 2024).
+    """
+    series_id = _SOC_TO_SERIES.get(soc_code)
+    if not series_id:
+        logger.warning("No BLS series ID for SOC %s", soc_code)
+        return None
+
+    payload: dict = {
+        "seriesid": [series_id],
+        "startyear": str(year),
+        "endyear": str(year),
+    }
+    if api_key:
+        payload["registrationkey"] = api_key
+
+    try:
+        response = requests.post(BLS_API_URL, json=payload, timeout=10)
+        response.raise_for_status()
+        data = response.json()
+    except Exception as exc:
+        logger.warning("BLS API request failed for SOC %s: %s", soc_code, exc)
+        return None
+
+    try:
+        series_list = data.get("Results", {}).get("series", [])
+        if not series_list:
+            return None
+        series_data = series_list[0].get("data", [])
+        if not series_data:
+            return None
+        # Take the most recent annual value
+        value_str = series_data[0].get("value", "")
+        return float(value_str)
+    except (KeyError, IndexError, ValueError) as exc:
+        logger.warning("Failed to parse BLS response for SOC %s: %s", soc_code, exc)
+        return None
+
+
+def refresh_benchmarks_from_bls(
+    benchmarks: dict[str, BLSBenchmark],
+    api_key: Optional[str] = None,
+    year: int = 2024,
+) -> dict[str, BLSBenchmark]:
+    """
+    Return a copy of ``benchmarks`` with median_hourly values updated from
+    the live BLS OEWS API.  Any SOC code that fails to fetch retains its
+    hardcoded fallback value.
+
+    Args:
+        benchmarks: The benchmark dict to refresh (typically BLS_BENCHMARKS).
+        api_key: Optional BLS API key for higher rate limits.
+        year: Survey year to request.
+    """
+    updated: dict[str, BLSBenchmark] = {}
+    for key, bm in benchmarks.items():
+        live_hourly = fetch_bls_median_hourly(bm.soc_code, api_key=api_key, year=year)
+        if live_hourly is not None:
+            logger.info(
+                "BLS live wage for %s (%s): $%.2f/hr (was $%.2f)",
+                bm.soc_code, bm.bls_title, live_hourly, bm.median_hourly,
+            )
+            updated[key] = BLSBenchmark(
+                role_name=bm.role_name,
+                bls_title=bm.bls_title,
+                soc_code=bm.soc_code,
+                median_hourly=live_hourly,
+                median_annual=round(live_hourly * 2080),
+                source_year=year,
+            )
+        else:
+            logger.info(
+                "Using hardcoded fallback for %s (%s): $%.2f/hr",
+                bm.soc_code, bm.bls_title, bm.median_hourly,
+            )
+            updated[key] = bm
+    return updated
 
 
 # ---------------------------------------------------------------------------
@@ -271,8 +383,12 @@ def calculate_quiet_yield(
     roles: list[ClubRole],
     tax_year: int = 2024,
     reported_revenue: Optional[float] = None,
+    benchmarks: Optional[dict[str, BLSBenchmark]] = None,
 ) -> QuietYieldReport:
     """Run the Quiet Yield calculation for a club."""
+
+    if benchmarks is None:
+        benchmarks = BLS_BENCHMARKS
 
     role_results = []
     total_market = 0.0
@@ -280,7 +396,7 @@ def calculate_quiet_yield(
     total_hours = 0.0
 
     for role in roles:
-        benchmark = BLS_BENCHMARKS.get(role.role_key)
+        benchmark = benchmarks.get(role.role_key)
         if not benchmark:
             continue
 
@@ -320,7 +436,7 @@ def calculate_quiet_yield(
     )
 
 
-def print_report(report: QuietYieldReport):
+def print_report(report: QuietYieldReport) -> None:
     """Print a formatted Quiet Yield report."""
     print(f"\n{'='*70}")
     print(f"QUIET YIELD REPORT: {report.club_name.upper()}")
@@ -356,11 +472,64 @@ def print_report(report: QuietYieldReport):
     print(f"   ──────────────────────────────────────────")
     print(f"   QUIET YIELD (invisible gap): ${report.total_quiet_yield:,.0f}/year")
 
-    if report.reported_total_revenue:
+    if report.reported_total_revenue and report.quiet_yield_as_pct_revenue is not None:
         print(f"\n   Reported club revenue:       ${report.reported_total_revenue:,.0f}")
         print(f"   Quiet yield as % of revenue: {report.quiet_yield_as_pct_revenue:.1f}%")
         print(f"\n   In plain English: For every $1 this club reports in revenue,")
-        print(f"   another ${report.quiet_yield_as_pct_revenue/100:.2f} in labor value is being absorbed silently by volunteers.")
+        pct = report.quiet_yield_as_pct_revenue / 100
+        print(f"   another ${pct:.2f} in labor value is being absorbed silently by volunteers.")
+
+
+def run_custom_mode() -> None:
+    """
+    Interactive custom role calculator.
+    Prompts the user for role details and prints the quiet yield on the fly.
+    """
+    print("\n🛶  QUIET YIELD — CUSTOM ROLE CALCULATOR")
+    print("   Enter details for a single volunteer role.\n")
+
+    role_name = input("Role name (e.g. 'Fleet Captain'): ").strip() or "Custom Role"
+    try:
+        volunteers = int(input("Number of volunteers in this role: ").strip())
+    except ValueError:
+        volunteers = 1
+    try:
+        hours = float(input("Hours per volunteer per year: ").strip())
+    except ValueError:
+        hours = 0.0
+    try:
+        actual_comp = float(
+            input("Total actual compensation paid to all volunteers (0 if unpaid): $").strip()
+        )
+    except ValueError:
+        actual_comp = 0.0
+    try:
+        hourly_rate = float(
+            input("BLS comparable hourly rate (leave blank to enter annual): ").strip()
+        )
+    except ValueError:
+        hourly_rate = 0.0
+        try:
+            annual = float(input("BLS comparable annual wage: $").strip())
+            hourly_rate = annual / 2080
+        except ValueError:
+            hourly_rate = 0.0
+
+    total_hours = volunteers * hours
+    market_value = hourly_rate * total_hours
+    quiet_yield = market_value - actual_comp
+
+    print(f"\n{'='*55}")
+    print(f"QUIET YIELD: {role_name}")
+    print(f"{'='*55}")
+    print(f"  Volunteers:          {volunteers}")
+    print(f"  Hours each/year:     {hours:,.0f}")
+    print(f"  Total hours/year:    {total_hours:,.0f}")
+    print(f"  BLS hourly rate:     ${hourly_rate:.2f}")
+    print(f"  Market value:        ${market_value:,.0f}")
+    print(f"  Actual compensation: ${actual_comp:,.0f}")
+    print(f"  ─────────────────────────────────────")
+    print(f"  QUIET YIELD:         ${quiet_yield:,.0f}/year")
 
 
 # ---------------------------------------------------------------------------
@@ -381,13 +550,94 @@ CLUB_NAMES = {
 }
 
 
-def main():
+def _get_benchmarks(
+    use_bls_api: bool,
+    api_key: Optional[str],
+) -> dict[str, BLSBenchmark]:
+    """Return benchmarks, optionally refreshed from the live BLS OEWS API."""
+    if use_bls_api:
+        print("🌐  Fetching live BLS OEWS wage data… (falls back to May 2024 if unavailable)")
+        return refresh_benchmarks_from_bls(BLS_BENCHMARKS, api_key=api_key)
+    return BLS_BENCHMARKS
+
+
+def _print_comparison_table(
+    clubs: list[str],
+    benchmarks: dict[str, BLSBenchmark],
+    label: str = "TX GULF COAST CLUBS",
+) -> None:
+    """Print a side-by-side quiet yield comparison for a list of club slugs."""
+    print(f"\n{'='*70}")
+    print(f"QUIET YIELD COMPARISON — {label}")
+    print(f"{'='*70}")
+    print(f"{'Club':<35} {'Quiet Yield':>14} {'Hours':>8} {'% Revenue':>12}")
+    print("-" * 72)
+    for slug in clubs:
+        r = calculate_quiet_yield(
+            club_slug=slug,
+            club_name=CLUB_NAMES[slug],
+            roles=DEFAULT_ROLES,
+            tax_year=2023,
+            reported_revenue=CLUB_REVENUE_2023.get(slug),
+            benchmarks=benchmarks,
+        )
+        pct = f"{r.quiet_yield_as_pct_revenue:.1f}%" if r.quiet_yield_as_pct_revenue is not None else "n/a"
+        print(
+            f"{r.club_name:<35} "
+            f"${r.total_quiet_yield:>12,.0f} "
+            f"{r.total_volunteer_hours:>8.0f} "
+            f"{pct:>12}"
+        )
+
+
+def main() -> None:
     import argparse
+
     parser = argparse.ArgumentParser(description="Quiet Yield Calculator")
-    parser.add_argument("--club", choices=["lyc", "hyc", "tcyc", "all"], default="lyc")
-    parser.add_argument("--report", action="store_true", help="Print full report")
+    parser.add_argument(
+        "--club",
+        choices=["lyc", "hyc", "tcyc", "all"],
+        default="lyc",
+        help="Club to calculate (or 'all' for a comparison table)",
+    )
+    parser.add_argument("--report", action="store_true", help="Print full report (default for single club)")
     parser.add_argument("--json", action="store_true", help="Output JSON")
+    parser.add_argument("--custom", action="store_true", help="Interactive custom role calculator")
+    parser.add_argument(
+        "--compare-all",
+        action="store_true",
+        help="Run comparison across all clubs in the specified state",
+    )
+    parser.add_argument("--state", default="TX", help="State filter for --compare-all (default: TX)")
+    parser.add_argument(
+        "--bls-api",
+        action="store_true",
+        help="Fetch live BLS OEWS median wages (requires internet; falls back to hardcoded if unavailable)",
+    )
+    parser.add_argument(
+        "--bls-api-key",
+        default=os.environ.get("BLS_API_KEY", ""),
+        help="BLS API registration key (or set BLS_API_KEY env var)",
+    )
     args = parser.parse_args()
+
+    if args.custom:
+        run_custom_mode()
+        return
+
+    benchmarks = _get_benchmarks(
+        use_bls_api=args.bls_api,
+        api_key=args.bls_api_key or None,
+    )
+
+    # --compare-all: show a state-labelled comparison table
+    if args.compare_all:
+        _print_comparison_table(
+            clubs=list(CLUB_NAMES.keys()),
+            benchmarks=benchmarks,
+            label=f"{args.state} SAILING CLUBS",
+        )
+        return
 
     clubs = list(CLUB_NAMES.keys()) if args.club == "all" else [args.club]
 
@@ -398,6 +648,7 @@ def main():
             roles=DEFAULT_ROLES,
             tax_year=2023,
             reported_revenue=CLUB_REVENUE_2023.get(slug),
+            benchmarks=benchmarks,
         )
 
         if args.json:
@@ -406,26 +657,10 @@ def main():
             print_report(report)
 
     if args.club == "all" and not args.json:
-        print(f"\n\n{'='*70}")
-        print("QUIET YIELD COMPARISON — TX GULF COAST CLUBS")
-        print(f"{'='*70}")
-        print(f"{'Club':<35} {'Quiet Yield':>14} {'Hours':>8} {'% Revenue':>12}")
-        print("-" * 72)
-        for slug in clubs:
-            r = calculate_quiet_yield(
-                club_slug=slug,
-                club_name=CLUB_NAMES[slug],
-                roles=DEFAULT_ROLES,
-                tax_year=2023,
-                reported_revenue=CLUB_REVENUE_2023.get(slug),
-            )
-            pct = f"{r.quiet_yield_as_pct_revenue:.1f}%" if r.quiet_yield_as_pct_revenue else "n/a"
-            print(
-                f"{r.club_name:<35} "
-                f"${r.total_quiet_yield:>12,.0f} "
-                f"{r.total_volunteer_hours:>8.0f} "
-                f"{pct:>12}"
-            )
+        _print_comparison_table(
+            clubs=clubs,
+            benchmarks=benchmarks,
+        )
 
 
 if __name__ == "__main__":
