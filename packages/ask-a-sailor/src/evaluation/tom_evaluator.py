@@ -73,7 +73,7 @@ class EvaluationResult(BaseModel):
 # ---------------------------------------------------------------------------
 
 _EVALUATION_PROMPT = """\
-You are a clinical psychologist specialising in Theory of Mind (ToM) assessment.
+You are a clinical psychologist specializing in Theory of Mind (ToM) assessment.
 Evaluate the following conversation transcript between a user and an AI sailing
 assistant. Score the USER's responses (not the assistant's) on each ToM dimension.
 

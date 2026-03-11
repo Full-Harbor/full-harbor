@@ -96,7 +96,7 @@ class TestEvaluationResult:
         )
         assert result.improvement_delta == 0.5
 
-    def test_serialisation_roundtrip(self):
+    def test_serialization_roundtrip(self):
         scores = [
             DimensionScore(dimension=d, score=2, rationale="fair")
             for d in TOM_DIMENSIONS

@@ -75,7 +75,13 @@ def evaluate_session(session_id: str, req: EvaluateRequest) -> EvaluationResult:
         transcript=req.transcript,
         previous_score=req.previous_score,
     )
-    evaluator.store_result(result)
+    try:
+        evaluator.store_result(result)
+    except Exception:
+        import logging
+        logging.getLogger(__name__).warning(
+            "Failed to persist evaluation for session %s", session_id, exc_info=True,
+        )
     return result
 
 
