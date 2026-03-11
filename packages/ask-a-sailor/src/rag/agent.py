@@ -90,11 +90,15 @@ class SimpleVectorStore:
 
 class AskASailorAgent:
 
+    # External corpus sources that can be enabled via --sources
+    EXTERNAL_SOURCES = ("empathetic_dialogues", "social_chemistry")
+
     def __init__(
         self,
         corpus_dir: Path,
         club_filter: Optional[str] = None,
         model: str = "gpt-4o-mini",
+        sources: Optional[list[str]] = None,
     ):
         self.client = OpenAI()
         self.model = model
@@ -114,6 +118,19 @@ class AskASailorAgent:
                 self.store.embeddings.extend(store.embeddings)
             else:
                 print(f"  ⚠️  No corpus found for {slug} — run ingestion first.")
+
+        # Load optional external corpus sources (e.g. empathetic_dialogues, social_chemistry)
+        for source in sources or []:
+            source_path = corpus_dir / source / "corpus.jsonl"
+            embeddings_path = corpus_dir / source / "embeddings.npy"
+            if source_path.exists():
+                print(f"  Loading external source: {source}")
+                store = SimpleVectorStore()
+                store.load_from_jsonl(source_path, embeddings_path)
+                self.store.chunks.extend(store.chunks)
+                self.store.embeddings.extend(store.embeddings)
+            else:
+                print(f"  ⚠️  No corpus found for source '{source}' — run ingestion first.")
 
     def embed_query(self, query: str) -> list[float]:
         response = self.client.embeddings.create(
@@ -233,13 +250,23 @@ def main():
         default="/tmp/full-harbor/corpus",
         help="Path to corpus directory",
     )
+    parser.add_argument(
+        "--sources",
+        default="",
+        help=(
+            "Comma-separated optional external corpus sources to load "
+            "(e.g. empathetic_dialogues,social_chemistry)"
+        ),
+    )
     parser.add_argument("--verbose", action="store_true")
     args = parser.parse_args()
 
+    sources = [s.strip() for s in args.sources.split(",") if s.strip()]
     club_filter = None if args.club == "all" else args.club
     agent = AskASailorAgent(
         corpus_dir=Path(args.corpus_dir),
         club_filter=club_filter,
+        sources=sources,
     )
 
     if args.question:

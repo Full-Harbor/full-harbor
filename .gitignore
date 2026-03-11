@@ -37,3 +37,6 @@ htmlcov/
 /corpus/
 harbor_commons.db
 /audits/
+
+# Downloaded external datasets (large — not source)
+/data/external/
