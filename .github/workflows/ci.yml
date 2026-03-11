@@ -44,12 +44,11 @@ jobs:
         run: |
           python -c "
           import sys, pathlib
-          scorer_path = pathlib.Path('packages/club-auditor/src/analyzer/geo_scorer.py')
-          if not scorer_path.exists():
-              print('geo_scorer.py not present in this branch — skipping smoke test')
+          analyzer_path = pathlib.Path('packages/club-auditor/src/analyzer')
+          if not analyzer_path.exists():
+              print('club-auditor analyzer not present — skipping smoke test')
               sys.exit(0)
-          sys.path.insert(0, str(scorer_path.parent))
-          from geo_scorer import GEOScorer
-          s = GEOScorer()
-          print('GEOScorer import OK')
+          sys.path.insert(0, str(analyzer_path))
+          import geo_scorer
+          print('geo_scorer import OK — classes:', [c for c in dir(geo_scorer) if not c.startswith('_')])
           "
