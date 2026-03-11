@@ -391,5 +391,13 @@ def main():
         parser.print_help()
 
 
+class GEOScorer:
+    """Convenience class wrapper around the module-level score_url function."""
+
+    def score(self, url: str, club_slug: str = "unknown") -> GEOReport:
+        """Score a URL for GEO/AIO readiness."""
+        return score_url(url, club_slug)
+
+
 if __name__ == "__main__":
     main()
