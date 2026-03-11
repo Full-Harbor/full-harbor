@@ -4,6 +4,7 @@
 # Core AI / RAG
 openai>=1.20.0
 numpy>=1.26.0
+any-guardrail>=0.3.0
 
 # Web scraping & HTTP
 requests>=2.31.0
