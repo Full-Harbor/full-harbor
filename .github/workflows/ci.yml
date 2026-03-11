@@ -32,6 +32,7 @@ jobs:
       - name: Run corpus + unit tests (no API key required)
         env:
           OPENAI_API_KEY: ""
+          LLM_MODEL: "gpt-4o-mini"
         run: |
           pytest packages/ \
             -v \

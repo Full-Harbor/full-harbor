@@ -51,6 +51,28 @@ packages/
 └── club-steward/     # Internal club intelligence agent
 ```
 
+### LLM Provider Abstraction (any-llm)
+
+Ask a Sailor uses [mozilla-ai/any-llm](https://github.com/mozilla-ai/any-llm) to
+decouple from any single LLM vendor. Set the `LLM_MODEL` environment variable to
+switch providers without code changes:
+
+```bash
+# OpenAI (default)
+LLM_MODEL=gpt-4o-mini
+
+# Mistral (lower-cost deployments)
+LLM_MODEL=mistral-small-latest
+
+# Anthropic Claude
+LLM_MODEL=anthropic:claude-3-haiku
+
+# Local / Ollama (offline / data-private clubs)
+LLM_MODEL=ollama:llama3
+```
+
+See `.env.example` for all configurable environment variables.
+
 ---
 
 ## Partners
