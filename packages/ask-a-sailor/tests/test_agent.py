@@ -9,7 +9,8 @@ import pytest
 from pathlib import Path
 
 # Allow importing from the package
-sys.path.insert(0, str(Path(__file__).parents[2] / "src"))
+# parents[1] = packages/ask-a-sailor (one level up from tests/), so /src resolves correctly
+sys.path.insert(0, str(Path(__file__).parents[1] / "src"))
 
 from ingestion.ingest_club_content import ingest_structured_data, chunk_document
 from rag.agent import AskASailorAgent, SimpleVectorStore, SYSTEM_PROMPT
