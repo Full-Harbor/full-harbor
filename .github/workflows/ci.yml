@@ -37,7 +37,6 @@ jobs:
             -v \
             --tb=short \
             -m "not integration" \
-            --ignore=packages/club-steward \
             2>&1
 
       - name: Audit score smoke test
