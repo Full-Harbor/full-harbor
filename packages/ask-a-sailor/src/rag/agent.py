@@ -15,10 +15,9 @@ Usage:
   python agent.py --club all --question "Which club has the best beginner program?"
 
 API mode (FastAPI):
-  uvicorn agent:app --host 0.0.0.0 --port 8000
+  uvicorn api.main:app --host 0.0.0.0 --port 8000
 """
 
-import os
 import json
 import argparse
 import numpy as np
@@ -27,57 +26,7 @@ from typing import Optional
 
 from openai import OpenAI
 
-# ---------------------------------------------------------------------------
-# System Prompt — The Soul of Ask a Sailor
-# ---------------------------------------------------------------------------
-
-SYSTEM_PROMPT = """You are Ask a Sailor, a friendly and knowledgeable AI assistant
-that helps parents, families, and newcomers learn about youth sailing programs,
-summer camps, and sailing clubs.
-
-Your job is to answer questions clearly, honestly, and helpfully — the way a
-knowledgeable friend who happens to be a sailor would answer them.
-
-CORE BEHAVIORS:
-- Answer in plain, jargon-free language. If you use sailing terms, explain them.
-- Always state where the information comes from (website, newsletter, verified audit data).
-- If pricing, dates, or details might have changed since your last update, say so and
-  direct the person to contact the club directly.
-- Never make up information. If you don't know, say so and give the club's contact info.
-- Be warm and welcoming. Many parents are nervous about sailing. Make it feel accessible.
-- If a parent seems worried about cost, mention non-member options and scholarships if known.
-- If asked about safety, always address it directly and honestly.
-
-CONTACT INFORMATION (always available as fallback):
-- Lakewood Yacht Club: 281-474-2511 | membership@lakewoodyachtclub.com
-- Houston Yacht Club: 281-471-1255 | sailing@houstonyachtclub.com (Clement Jardin, Sailing Director)
-- Texas Corinthian Yacht Club: 281-339-1566 | manager@tcyc.org
-
-When you answer, structure your response as:
-1. Direct answer to the question
-2. Supporting details (dates, prices, requirements)
-3. Where to learn more or register
-4. An encouraging note for first-timers (when appropriate)
-"""
-
-PARENT_QUESTION_CATEGORIES = [
-    "cost/pricing",
-    "age requirements",
-    "schedule/dates",
-    "membership requirement",
-    "swim requirement",
-    "experience level",
-    "what to bring",
-    "registration/how to sign up",
-    "coaches/instruction quality",
-    "boat types",
-    "safety",
-    "year-round programs",
-    "non-member access",
-    "cancellation/refund policy",
-    "scholarship/financial aid",
-    "trial day",
-]
+from prompts.system import SYSTEM_PROMPT
 
 
 # ---------------------------------------------------------------------------
@@ -257,54 +206,10 @@ class AskASailorAgent:
 
 
 # ---------------------------------------------------------------------------
-# FastAPI App (optional — for deployment as a web service)
+# FastAPI App — see api/main.py
 # ---------------------------------------------------------------------------
-
-try:
-    from fastapi import FastAPI, HTTPException
-    from pydantic import BaseModel
-
-    app = FastAPI(
-        title="Ask a Sailor",
-        description="AI agent for youth sailing program questions",
-        version="0.1.0",
-    )
-
-    # Initialize agent on startup
-    CORPUS_DIR = Path(os.environ.get("CORPUS_DIR", "/tmp/full-harbor/corpus"))
-    DEFAULT_CLUB = os.environ.get("CLUB_FILTER")  # None = multi-club mode
-
-    _agent = None
-
-    @app.on_event("startup")
-    def startup():
-        global _agent
-        _agent = AskASailorAgent(CORPUS_DIR, club_filter=DEFAULT_CLUB)
-
-    class QuestionRequest(BaseModel):
-        question: str
-        club: Optional[str] = None
-        history: Optional[list[dict]] = None
-
-    class AnswerResponse(BaseModel):
-        answer: str
-        sources: list[str]
-        chunks_retrieved: int
-
-    @app.post("/ask", response_model=AnswerResponse)
-    def ask(req: QuestionRequest):
-        if _agent is None:
-            raise HTTPException(status_code=503, detail="Agent not initialized")
-        result = _agent.answer(req.question, conversation_history=req.history)
-        return AnswerResponse(**result)
-
-    @app.get("/health")
-    def health():
-        return {"status": "ok", "chunks_loaded": len(_agent.store.chunks) if _agent else 0}
-
-except ImportError:
-    # FastAPI not installed — CLI mode only
-    app = None
+# The FastAPI application has been extracted to src/api/main.py.
+# Run with: uvicorn api.main:app --host 0.0.0.0 --port 8000
 
 
 # ---------------------------------------------------------------------------
