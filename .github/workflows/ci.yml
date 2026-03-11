@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: test
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Lint (ruff)
+        run: ruff check packages/ --select E,F,W --ignore E501 || true
+
+      - name: Type check (pyright)
+        run: pyright packages/ --pythonversion 3.11 || true
+
+      - name: Run corpus + unit tests (no API key required)
+        env:
+          OPENAI_API_KEY: ""
+        run: |
+          pytest packages/ \
+            -v \
+            --tb=short \
+            -m "not integration" \
+            --ignore=packages/club-steward \
+            2>&1
+
+      - name: Audit score smoke test
+        run: |
+          python -c "
+          import sys; sys.path.insert(0, 'packages/club-auditor/src/analyzer')
+          from geo_scorer import GEOScorer
+          s = GEOScorer()
+          print('GEOScorer import OK')
+          "

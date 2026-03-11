@@ -26,3 +26,10 @@ dev = [
     "ruff>=0.1",
     "mypy>=1.5",
 ]
+
+[tool.pytest.ini_options]
+markers = [
+    "integration: requires live API keys (OPENAI_API_KEY etc.) — skipped in CI",
+]
+testpaths = ["packages"]
+addopts = "-p no:cacheprovider"
