@@ -20,6 +20,7 @@ from typing import Optional
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
+from evaluation.tom_evaluator import EvaluationResult, ToMEvaluator
 from rag.agent import AskASailorAgent
 
 app = FastAPI(
@@ -58,6 +59,36 @@ def ask(req: QuestionRequest) -> AnswerResponse:
         raise HTTPException(status_code=503, detail="Agent not initialized")
     result = _agent.answer(req.question, conversation_history=req.history)
     return AnswerResponse(**result)
+
+
+class EvaluateRequest(BaseModel):
+    transcript: list[dict]
+    previous_score: Optional[float] = None
+
+
+@app.post("/sessions/{session_id}/evaluate", response_model=EvaluationResult)
+def evaluate_session(session_id: str, req: EvaluateRequest) -> EvaluationResult:
+    """Run a ToM evaluation on a conversation transcript and persist it."""
+    evaluator = ToMEvaluator()
+    result = evaluator.evaluate(
+        session_id=session_id,
+        transcript=req.transcript,
+        previous_score=req.previous_score,
+    )
+    evaluator.store_result(result)
+    return result
+
+
+@app.get("/sessions/{session_id}/evaluation", response_model=EvaluationResult)
+def get_evaluation(session_id: str) -> EvaluationResult:
+    """Retrieve a stored ToM evaluation for a session."""
+    result = ToMEvaluator.fetch_result(session_id)
+    if result is None:
+        raise HTTPException(
+            status_code=404,
+            detail=f"No evaluation found for session {session_id}",
+        )
+    return result
 
 
 @app.get("/health")
