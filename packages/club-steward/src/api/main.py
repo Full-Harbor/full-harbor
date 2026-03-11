@@ -14,7 +14,8 @@ Environment variables:
   STEWARD_API_KEY_TCYC=<secret>    # API key for Texas Corinthian Yacht Club
   STEWARD_ADMIN_KEY=<secret>       # Admin key with access to all clubs
   CORPUS_DIR=/tmp/full-harbor/corpus
-  HARBOR_COMMONS_DB=/tmp/full-harbor/harbor_commons.db
+  SUPABASE_URL=https://<ref>.supabase.co
+  SUPABASE_SERVICE_KEY=<service-role-key>
 
 Usage:
   uvicorn main:app --host 0.0.0.0 --port 8001
