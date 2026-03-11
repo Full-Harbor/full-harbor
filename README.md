@@ -13,9 +13,9 @@ Every club struggles to publish program pricing clearly.
 Every club has someone absorbing invisible labor to fill the gaps.  
 Every club is trying to figure out what AI does to their search visibility.
 
-Nobody builds the answer once. So everyone builds it badly, separately, forever.
+Nobody builds the answer once. So every club builds its own version, separately, from scratch.
 
-That stops here.
+Full Harbor builds it once, for everyone.
 
 ---
 
@@ -53,14 +53,9 @@ packages/
 
 ---
 
-## Funders & Partners
+## Partners
 
-- 11th Hour Racing (sailing sector, ocean health)
-- 11th Hour Project / N2 Program (nature + nurture, youth access)
-- Mozilla Foundation (responsible AI, Democracy × AI Incubator)
-- Robert Wood Johnson Foundation (community health, equity)
-- Richard L. Duchossois Foundation (Chicago, data infrastructure)
-- US Sailing / US Sailing Foundation (host organizations, fractional partnership)
+Full Harbor works with sailing clubs, community sailing programs, and waterfront nonprofits as a **fractional member** — not a vendor. If your organization is interested in joining the network, open an issue or reach out directly.
 
 ---
 

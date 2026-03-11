@@ -59,7 +59,7 @@ packages/
   club-steward/       (stub — premium tier)
 .github/workflows/    ci.yml
 corpus/               JSONL files (local dev only)
-docs/funders/         Mozilla LOI, other grant docs
+docs/internal/        Grant drafts, funder research (internal — not public-facing)
 ```
 
 ---
