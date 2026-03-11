@@ -3,6 +3,7 @@ __pycache__/
 *.pyo
 *.pyd
 *.py[cod]
+# Python
 .Python
 *.egg-info/
 dist/
@@ -15,3 +16,24 @@ venv/
 .pytest_cache/
 *.db
 /tmp/
+.eggs/
+
+# Virtual environments
+.venv/
+env/
+# Testing
+.coverage
+htmlcov/
+# Environment
+.env.*
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+# macOS
+.DS_Store
+# Local corpus and DB files (generated — not source)
+/corpus/
+harbor_commons.db
+/audits/
