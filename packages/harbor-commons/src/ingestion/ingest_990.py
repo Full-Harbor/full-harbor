@@ -78,6 +78,59 @@ class ClubFinancials:
         return asdict(self)
 
 
+@dataclass
+class CompensationRecord:
+    """
+    Individual officer/key-employee compensation from Form 990, Part VII.
+
+    Maps to the sailing_compensation table in Supabase (populated by
+    harbor_ingest for production; this dev-reference parser handles
+    ProPublica filings that include officer compensation data).
+    """
+    ein: str
+    tax_year: int
+    person_name: str
+    title: str
+
+    # Compensation amounts (Part VII, Section A columns D–F)
+    reportable_comp_from_org: Optional[int] = None      # Column D
+    reportable_comp_from_related: Optional[int] = None   # Column E
+    other_compensation: Optional[int] = None              # Column F
+
+    # Officer/director flags
+    individual_trustee_or_director: bool = False
+    institutional_trustee: bool = False
+    officer: bool = False
+    key_employee: bool = False
+    highest_compensated: bool = False
+    former: bool = False
+
+    # Average hours per week
+    avg_hours_per_week: Optional[float] = None
+
+    # Metadata
+    source: str = "propublica"
+    ingested_at: str = ""
+
+    def __post_init__(self):
+        if not self.ingested_at:
+            self.ingested_at = datetime.utcnow().isoformat()
+
+    @property
+    def total_compensation(self) -> int:
+        """Sum of all three compensation columns."""
+        return (
+            (self.reportable_comp_from_org or 0)
+            + (self.reportable_comp_from_related or 0)
+            + (self.other_compensation or 0)
+        )
+
+    def to_dict(self):
+        d = asdict(self)
+        d["total_compensation"] = self.total_compensation
+        return d
+
+
 # ---------------------------------------------------------------------------
 # ProPublica API Client
 # ---------------------------------------------------------------------------
@@ -167,12 +220,74 @@ def parse_propublica_filing(org_info: dict, filing: dict) -> ClubFinancials:
         program_revenue=_safe_int(filing.get("progservrev")),
         investment_income=_safe_int(filing.get("invstmntinc")),
         total_compensation=_safe_int(filing.get("totcmpnsatncurrofcr")),
+        officer_count=_safe_int(filing.get("noofficers")),
         employee_count=_safe_int(filing.get("noemployees")),
         mission=org_info.get("subseccd", ""),
         filing_date=filing.get("updated"),
         return_id=str(filing.get("object_id", "")),
         source="propublica",
     )
+
+
+def parse_officer_compensation(
+    ein: str,
+    tax_year: int,
+    filing: dict,
+) -> list[CompensationRecord]:
+    """
+    Extract Part VII officer compensation records from a ProPublica filing.
+
+    ProPublica filing detail responses may include an ``officers`` list
+    with per-person compensation data.  Each entry typically contains:
+      - name, title
+      - compensation (reportable compensation from the organization)
+
+    Returns an empty list when the filing does not contain officer detail
+    (e.g., 990-EZ filings or filings without Part VII data).
+    """
+    officers_raw = filing.get("officers", [])
+    if not officers_raw:
+        return []
+
+    records: list[CompensationRecord] = []
+    for entry in officers_raw:
+        name = (entry.get("name") or "").strip()
+        title = (entry.get("title") or "").strip()
+        if not name:
+            continue
+
+        records.append(CompensationRecord(
+            ein=ein,
+            tax_year=tax_year,
+            person_name=name,
+            title=title,
+            reportable_comp_from_org=_safe_int(entry.get("compensation")),
+            reportable_comp_from_related=_safe_int(
+                entry.get("compensation_from_related"),
+            ),
+            other_compensation=_safe_int(entry.get("other_compensation")),
+            officer="officer" in title.lower() or bool(entry.get("officer")),
+            individual_trustee_or_director=(
+                "director" in title.lower()
+                or "trustee" in title.lower()
+                or bool(entry.get("individual_trustee_or_director"))
+            ),
+            key_employee=bool(entry.get("key_employee")),
+            highest_compensated=bool(entry.get("highest_compensated")),
+            former=bool(entry.get("former")),
+            avg_hours_per_week=_safe_float(entry.get("avg_hours_per_week")),
+            source="propublica",
+        ))
+    return records
+
+
+def _safe_float(val) -> Optional[float]:
+    if val is None:
+        return None
+    try:
+        return float(str(val).replace(",", ""))
+    except (ValueError, TypeError):
+        return None
 
 
 def _safe_int(val) -> Optional[int]:
@@ -235,6 +350,30 @@ CREATE TABLE IF NOT EXISTS club_financials (
 );
 """
 
+CREATE_COMPENSATION_TABLE_SQL = """
+CREATE TABLE IF NOT EXISTS compensation (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    ein TEXT NOT NULL,
+    tax_year INTEGER NOT NULL,
+    person_name TEXT NOT NULL,
+    title TEXT,
+    reportable_comp_from_org INTEGER,
+    reportable_comp_from_related INTEGER,
+    other_compensation INTEGER,
+    total_compensation INTEGER,
+    individual_trustee_or_director INTEGER DEFAULT 0,
+    institutional_trustee INTEGER DEFAULT 0,
+    officer INTEGER DEFAULT 0,
+    key_employee INTEGER DEFAULT 0,
+    highest_compensated INTEGER DEFAULT 0,
+    former INTEGER DEFAULT 0,
+    avg_hours_per_week REAL,
+    source TEXT,
+    ingested_at TEXT,
+    UNIQUE(ein, tax_year, person_name, title)
+);
+"""
+
 CREATE_INDEX_SQL = """
 CREATE INDEX IF NOT EXISTS idx_club_state ON club_financials(state);
 CREATE INDEX IF NOT EXISTS idx_club_ein ON club_financials(ein);
@@ -251,7 +390,9 @@ class HarborCommonsDB:
         print(f"  ✅ Database: {db_path}")
 
     def _init_schema(self):
-        self.conn.executescript(CREATE_TABLE_SQL + CREATE_INDEX_SQL)
+        self.conn.executescript(
+            CREATE_TABLE_SQL + CREATE_COMPENSATION_TABLE_SQL + CREATE_INDEX_SQL
+        )
         self.conn.commit()
 
     def upsert(self, record: ClubFinancials) -> bool:
@@ -269,6 +410,33 @@ class HarborCommonsDB:
         except Exception as e:
             print(f"    ⚠️  DB upsert failed for {record.ein}: {e}")
             return False
+
+    def upsert_compensation(self, record: CompensationRecord) -> bool:
+        """Insert or replace a single compensation record."""
+        d = record.to_dict()
+        placeholders = ", ".join(f":{k}" for k in d)
+        cols = ", ".join(d.keys())
+        sql = f"""
+            INSERT OR REPLACE INTO compensation ({cols})
+            VALUES ({placeholders})
+        """
+        try:
+            self.conn.execute(sql, d)
+            self.conn.commit()
+            return True
+        except Exception as e:
+            print(f"    ⚠️  Compensation upsert failed for {record.ein}: {e}")
+            return False
+
+    def upsert_compensation_batch(
+        self, records: list[CompensationRecord],
+    ) -> int:
+        """Insert a batch of compensation records. Returns number saved."""
+        saved = 0
+        for rec in records:
+            if self.upsert_compensation(rec):
+                saved += 1
+        return saved
 
     def query(self, sql: str, params: tuple = ()) -> list[dict]:
         cursor = self.conn.execute(sql, params)
@@ -307,6 +475,17 @@ class HarborCommonsDB:
             tuple(params),
         )
 
+    def compensation_summary(self, ein: str) -> list[dict]:
+        """Return all compensation records for a given EIN, most recent first."""
+        return self.query(
+            """
+            SELECT * FROM compensation
+            WHERE ein = ?
+            ORDER BY tax_year DESC, total_compensation DESC
+            """,
+            (ein,),
+        )
+
     def close(self):
         self.conn.close()
 
@@ -340,6 +519,12 @@ def ingest_known_clubs(db: HarborCommonsDB):
             saved = db.upsert(record)
             if saved:
                 print(f"    ✅ {record.name} — {record.tax_year} ({record.form_type})")
+
+            # Extract Part VII officer compensation
+            comp_records = parse_officer_compensation(ein, record.tax_year, filing)
+            if comp_records:
+                n = db.upsert_compensation_batch(comp_records)
+                print(f"    💰 {n} compensation records for {record.tax_year}")
         time.sleep(0.3)
 
 
@@ -361,6 +546,9 @@ def ingest_by_search(
         for filing in filings:
             record = parse_propublica_filing(org, filing)
             db.upsert(record)
+            comp_records = parse_officer_compensation(ein, record.tax_year, filing)
+            if comp_records:
+                db.upsert_compensation_batch(comp_records)
         time.sleep(0.2)
 
 
@@ -401,6 +589,12 @@ def main():
                 record = parse_propublica_filing(org, filing)
                 if db.upsert(record):
                     print(f"  ✅ {record.name} — {record.tax_year}")
+                comp_records = parse_officer_compensation(
+                    args.ein, record.tax_year, filing,
+                )
+                if comp_records:
+                    n = db.upsert_compensation_batch(comp_records)
+                    print(f"  💰 {n} compensation records for {record.tax_year}")
         except Exception as e:
             print(f"  ⚠️  Error: {e}")
 

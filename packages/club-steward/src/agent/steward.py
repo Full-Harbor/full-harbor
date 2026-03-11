@@ -240,6 +240,31 @@ class FinancialDataClient:
             logger.warning("Peer benchmark query failed: %s", exc)
             return []
 
+    def get_officer_compensation(
+        self,
+        club_slug: str,
+        tax_year: Optional[int] = None,
+    ) -> list[dict]:
+        """Return officer compensation records from sailing_compensation."""
+        ein = KNOWN_CLUB_EINS.get(club_slug)
+        if not ein or not self._db:
+            return []
+        try:
+            query = (
+                self._db.table("sailing_compensation")
+                .select("*")
+                .eq("ein", ein)
+                .order("tax_year", desc=True)
+                .limit(50)
+            )
+            if tax_year:
+                query = query.eq("tax_year", tax_year)
+            result = query.execute()
+            return result.data or []
+        except Exception as exc:  # noqa: BLE001
+            logger.warning("Compensation query failed: %s", exc)
+            return []
+
     def format_financial_context(self, club_slug: str) -> str:
         """Format own-club financial data as readable context for the LLM."""
         records = self.get_club_financials(club_slug)
