@@ -24,12 +24,40 @@ The principal is a **practitioner**. Do not use "founder" language.
 **This repo reads FROM Supabase. It does not re-derive what harbor_ingest already has.**
 
 The Supabase project (`fullharbor`) contains:
-- `sailing_ecosystem` — 2,122 sailing/yacht clubs, ~4,120 rows
+- `sailing_ecosystem` — **4,764 rows, 2,124 unique EINs** — sailing/yacht clubs
 - `sailing_embeddings` — vector embeddings; query via `match_sailing_embeddings()` RPC
-- `sailing_filer_core`, `sailing_officers`, `sailing_programs` — 990 financials
-- `sailing_compensation`, `sailing_governance` — compensation & governance data
-- `canonical_orgs` — canonical org records with EIN, filer_name, state
+- `sailing_filer_core` — **4,187 rows, 893 unique EINs, years 2013–2025** — 990 financials (see column reference below)
+- `sailing_officers`, `sailing_programs` — officers and programs data
+- `sailing_compensation` — **currently 0 rows (known data gap — Part VII extraction pending)**
+- `sailing_governance` — 4,182 rows of governance data
+- `canonical_orgs` — **4 rows (smoke-test data only — HYC/LYC/TCYC not yet populated)**
 - `leads`, `workspace_ai_chats`, `workspace_shared_outputs` — product/CRM layer
+
+### `sailing_filer_core` column reference (use these exact names)
+
+| Column | Type | Notes |
+|---|---|---|
+| `ein` | text | Employer Identification Number |
+| `tax_year` | integer | e.g. 2023 |
+| `filer_name` | text | Organization name |
+| `address_state` | text | 2-letter state code |
+| `gross_receipts_amt` | numeric | Gross receipts |
+| `cy_total_revenue_amt` | numeric | Current year total revenue |
+| `py_total_revenue_amt` | numeric | Prior year total revenue |
+| `cy_total_expenses_amt` | numeric | Current year total expenses |
+| `cy_contributions_grants_amt` | numeric | CY contributions + grants |
+| `cy_investment_income_amt` | numeric | CY investment income |
+| `cy_grants_paid_amt` | numeric | CY grants paid |
+| `cy_salaries_amt` | numeric | CY salaries |
+| `total_assets_eoy_amt` | numeric | Total assets end of year |
+| `net_assets_eoy_amt` | numeric | Net assets end of year |
+| `total_employee_cnt` | integer | Employee count |
+| `volunteer_cnt` | integer | Volunteer count |
+| `activity_or_mission_desc` | text | Mission description |
+| `filing_signals` | jsonb | Anomaly signal flags |
+| `signal_count` | integer | Number of anomaly flags |
+
+**Never use `total_revenue` — the column does not exist. Use `cy_total_revenue_amt`.**
 
 **Never write SQLite-based code as the production path.** SQLite is acceptable
 as a dev/test stand-in only, behind a `USE_SUPABASE=true` flag.
