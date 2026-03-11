@@ -393,8 +393,14 @@ class NewsletterLoader:
         sections = split_into_sections(text, issue_name, self.club_slug)
         return [s.to_chunk() for s in sections]
 
-    def save_to_corpus(self, output_dir: Path) -> Path:
-        """Load all newsletters and save to JSONL corpus file."""
+    def save_to_corpus(self, output_dir: Path) -> Optional[Path]:
+        """Load all newsletters and save to JSONL corpus file.
+
+        Deduplicates by ``doc_id``: if a newsletter issue is already present
+        in the existing output file it is skipped rather than written again.
+
+        Returns the output path, or ``None`` if no newsletter files were found.
+        """
         chunks = self.load_all()
         if not chunks:
             print(f"  ⚠️  No chunks to save for {self.club_slug}")
@@ -404,11 +410,32 @@ class NewsletterLoader:
         club_corpus_dir.mkdir(parents=True, exist_ok=True)
         out_path = club_corpus_dir / "newsletters.jsonl"
 
-        with open(out_path, "w") as f:
-            for chunk in chunks:
+        # Load existing doc_ids to avoid duplicating newsletter issues
+        existing_doc_ids: set[str] = set()
+        if out_path.exists():
+            with open(out_path, "r") as f:
+                for line in f:
+                    line = line.strip()
+                    if line:
+                        try:
+                            existing_doc_ids.add(json.loads(line)["doc_id"])
+                        except (json.JSONDecodeError, KeyError):
+                            pass
+
+        new_chunks = [c for c in chunks if c["doc_id"] not in existing_doc_ids]
+        skipped = len(chunks) - len(new_chunks)
+        if skipped:
+            print(f"  ℹ️  Skipped {skipped} chunks from already-ingested issues")
+
+        if not new_chunks:
+            print(f"  ℹ️  All newsletter issues already in corpus — nothing to write")
+            return out_path
+
+        with open(out_path, "a") as f:
+            for chunk in new_chunks:
                 f.write(json.dumps(chunk) + "\n")
 
-        print(f"\n  ✅ Saved {len(chunks)} newsletter chunks → {out_path}")
+        print(f"\n  ✅ Saved {len(new_chunks)} newsletter chunks → {out_path}")
         return out_path
 
 
