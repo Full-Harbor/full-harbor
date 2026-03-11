@@ -19,12 +19,13 @@ API mode (FastAPI):
 """
 
 import json
+import os
 import argparse
 import numpy as np
 from pathlib import Path
 from typing import Optional
 
-from openai import OpenAI
+from any_llm import completion, embedding
 
 from prompts.system import SYSTEM_PROMPT
 
@@ -94,10 +95,9 @@ class AskASailorAgent:
         self,
         corpus_dir: Path,
         club_filter: Optional[str] = None,
-        model: str = "gpt-4o-mini",
+        model: Optional[str] = None,
     ):
-        self.client = OpenAI()
-        self.model = model
+        self.model = model or os.environ.get("LLM_MODEL", "gpt-4o-mini")
         self.club_filter = club_filter
         self.store = SimpleVectorStore()
 
@@ -116,9 +116,9 @@ class AskASailorAgent:
                 print(f"  ⚠️  No corpus found for {slug} — run ingestion first.")
 
     def embed_query(self, query: str) -> list[float]:
-        response = self.client.embeddings.create(
+        response = embedding(
             model="text-embedding-3-small",
-            input=query,
+            inputs=query,
         )
         return response.data[0].embedding
 
@@ -182,7 +182,7 @@ class AskASailorAgent:
         })
 
         # Generate answer
-        response = self.client.chat.completions.create(
+        response = completion(
             model=self.model,
             messages=messages,
             temperature=0.3,  # Low temperature for factual accuracy

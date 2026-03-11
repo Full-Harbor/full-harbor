@@ -138,3 +138,63 @@ def test_agent_graceful_no_info():
     all_text = " ".join(c.get("text", "") for c in store.chunks)
     # TCYC has no pricing in corpus
     assert "$" not in all_text or "tcyc" not in all_text.lower()
+
+
+# ---------------------------------------------------------------------------
+# Mocked any-llm provider tests (no API key required)
+# ---------------------------------------------------------------------------
+
+def test_agent_answer_with_mocked_any_llm(seeded_corpus, monkeypatch):
+    """Verify the agent works end-to-end with mocked any-llm completion + embedding."""
+    from unittest.mock import MagicMock
+
+    # Mock embedding — return a fixed vector so vector search falls back to first-N
+    mock_emb_response = MagicMock()
+    mock_emb_response.data = [MagicMock(embedding=[0.1] * 128)]
+    monkeypatch.setattr("rag.agent.embedding", lambda **kwargs: mock_emb_response)
+
+    # Mock completion — return a canned answer
+    mock_choice = MagicMock()
+    mock_choice.message.content = "Opti Camp costs $740 for members."
+    mock_comp_response = MagicMock()
+    mock_comp_response.choices = [mock_choice]
+    monkeypatch.setattr("rag.agent.completion", lambda **kwargs: mock_comp_response)
+
+    agent = AskASailorAgent(corpus_dir=seeded_corpus, club_filter="lyc")
+    result = agent.answer("How much does Opti Camp cost?")
+
+    assert "answer" in result
+    assert "740" in result["answer"]
+    assert result["model"] == "gpt-4o-mini"
+    assert result["chunks_retrieved"] > 0
+
+
+def test_agent_respects_llm_model_env(seeded_corpus, monkeypatch):
+    """LLM_MODEL env var should override the default model."""
+    from unittest.mock import MagicMock
+
+    monkeypatch.setenv("LLM_MODEL", "mistral-small-latest")
+
+    mock_emb_response = MagicMock()
+    mock_emb_response.data = [MagicMock(embedding=[0.1] * 128)]
+    monkeypatch.setattr("rag.agent.embedding", lambda **kwargs: mock_emb_response)
+
+    mock_choice = MagicMock()
+    mock_choice.message.content = "Test answer."
+    mock_comp_response = MagicMock()
+    mock_comp_response.choices = [mock_choice]
+
+    captured_kwargs = {}
+
+    def mock_completion(**kwargs):
+        captured_kwargs.update(kwargs)
+        return mock_comp_response
+
+    monkeypatch.setattr("rag.agent.completion", mock_completion)
+
+    agent = AskASailorAgent(corpus_dir=seeded_corpus, club_filter="lyc")
+    result = agent.answer("test question")
+
+    assert agent.model == "mistral-small-latest"
+    assert result["model"] == "mistral-small-latest"
+    assert captured_kwargs["model"] == "mistral-small-latest"
