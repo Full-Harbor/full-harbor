@@ -5,6 +5,7 @@ Verifies chunk format, PII filtering, and chunk counts without downloading real 
 
 import csv
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -204,7 +205,6 @@ class TestEmpatheticDialogues:
         chunks = ingest_ed(ed_input_dir, ed_input_dir / "output")
         for chunk in chunks:
             text = chunk["text"]
-            import re
             assert not re.search(r"\b\d{3}[-.]?\d{3}[-.]?\d{4}\b", text), \
                 f"Phone number found: {text}"
             assert not re.search(
@@ -309,7 +309,6 @@ class TestSocialChemistry:
         chunks = ingest_sc(sc_input_dir, sc_input_dir / "output")
         for chunk in chunks:
             text = chunk["text"]
-            import re
             assert not re.search(r"\b\d{3}[-.]?\d{3}[-.]?\d{4}\b", text)
             assert not re.search(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.\w+", text)
             assert not re.search(r"\b\d{3}-\d{2}-\d{4}\b", text)
