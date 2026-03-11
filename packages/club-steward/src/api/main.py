@@ -117,7 +117,6 @@ app = FastAPI(
 )
 
 CORPUS_DIR = Path(os.environ.get("CORPUS_DIR", "/tmp/full-harbor/corpus"))
-DB_PATH = os.environ.get("HARBOR_COMMONS_DB")
 
 # Per-club agent cache (lazy initialisation)
 _agents: dict[str, ClubStewardAgent] = {}
@@ -128,7 +127,6 @@ def _get_agent(club_slug: str) -> ClubStewardAgent:
         _agents[club_slug] = ClubStewardAgent(
             club_slug=club_slug,
             corpus_dir=CORPUS_DIR if CORPUS_DIR.exists() else None,
-            db_path=DB_PATH,
         )
     return _agents[club_slug]
 
@@ -201,7 +199,6 @@ def board_report(
     generator = BoardReportGenerator(
         club_slug=club_slug,
         corpus_dir=CORPUS_DIR if CORPUS_DIR.exists() else None,
-        db_path=DB_PATH,
     )
     memo = generator.generate(topic=req.topic, addressee=req.to)
     return BoardReportResponse(**memo.to_dict())

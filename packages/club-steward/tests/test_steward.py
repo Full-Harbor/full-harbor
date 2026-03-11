@@ -89,11 +89,10 @@ def seeded_corpus(tmp_path_factory):
 
 @pytest.fixture(scope="module")
 def lyc_agent(seeded_corpus):
-    """LYC-scoped ClubStewardAgent (no DB, no OpenAI needed for corpus tests)."""
+    """LYC-scoped ClubStewardAgent (no Supabase creds, no OpenAI needed for corpus tests)."""
     return ClubStewardAgent(
         club_slug="lyc",
         corpus_dir=seeded_corpus,
-        db_path="/nonexistent/path.db",  # forces graceful no-DB fallback
     )
 
 
@@ -185,7 +184,6 @@ def test_agent_build_context_only_own_club(seeded_corpus):
     lyc = ClubStewardAgent(
         club_slug="lyc",
         corpus_dir=seeded_corpus,
-        db_path="/nonexistent/path.db",
     )
     # Manually load HYC chunks into the same store to simulate a contamination scenario
     import json as _json
@@ -208,33 +206,27 @@ def test_agent_build_context_only_own_club(seeded_corpus):
 # FinancialDataClient Tests (no API key required)
 # ---------------------------------------------------------------------------
 
-def test_financial_client_graceful_no_db():
-    """FinancialDataClient must return empty lists when the DB doesn't exist."""
-    client = FinancialDataClient(db_path="/nonexistent/path/harbor.db")
+@pytest.fixture()
+def no_supabase_env(monkeypatch):
+    """Remove Supabase env vars so FinancialDataClient falls back gracefully."""
+    monkeypatch.delenv("SUPABASE_URL", raising=False)
+    monkeypatch.delenv("SUPABASE_SERVICE_KEY", raising=False)
+
+
+def test_financial_client_graceful_no_supabase_creds(no_supabase_env):
+    """FinancialDataClient must return empty lists when Supabase creds are not set."""
+    client = FinancialDataClient()
     assert client.get_club_financials("lyc") == []
     assert client.get_peer_benchmarks("lyc") == []
     assert client.format_financial_context("lyc") == ""
     assert client.format_peer_context("lyc") == ""
 
 
-def test_financial_client_unknown_club_returns_empty():
+def test_financial_client_unknown_club_returns_empty(no_supabase_env):
     """FinancialDataClient must return empty lists for unknown club slugs."""
-    client = FinancialDataClient(db_path="/nonexistent/path/harbor.db")
+    client = FinancialDataClient()
     assert client.get_club_financials("xyz") == []
     assert client.get_peer_benchmarks("xyz") == []
-
-
-def test_financial_client_with_real_db():
-    """If harbor_commons.db is present, verify it's queryable (no API key needed)."""
-    db_path = str(
-        Path(__file__).parents[4] / "harbor_commons.db"
-    )
-    if not Path(db_path).exists():
-        pytest.skip("harbor_commons.db not present — skipping live DB test")
-    client = FinancialDataClient(db_path=db_path)
-    # Should return a list (may be empty if not yet populated)
-    result = client.get_club_financials("lyc")
-    assert isinstance(result, list)
 
 
 # ---------------------------------------------------------------------------
@@ -381,7 +373,6 @@ def test_agent_answers_financial_question(seeded_corpus):
     agent = ClubStewardAgent(
         club_slug="lyc",
         corpus_dir=seeded_corpus,
-        db_path="/nonexistent/path.db",
     )
     result = agent.answer("What does Opti Camp cost for non-members?")
     assert result["club"] == "lyc"
@@ -401,7 +392,6 @@ def test_board_report_generator_produces_memo(seeded_corpus):
     generator = BoardReportGenerator(
         club_slug="lyc",
         corpus_dir=seeded_corpus,
-        db_path="/nonexistent/path.db",
     )
     memo = generator.generate("youth program growth 2019-2023")
     text = memo.to_text()

@@ -131,7 +131,6 @@ class BoardReportGenerator:
         self,
         club_slug: str,
         corpus_dir: Optional[Path] = None,
-        db_path: Optional[str] = None,
         model: str = "gpt-4o-mini",
     ):
         self.club_slug = club_slug
@@ -141,7 +140,6 @@ class BoardReportGenerator:
         self.agent = ClubStewardAgent(
             club_slug=club_slug,
             corpus_dir=corpus_dir,
-            db_path=db_path,
             model=model,
         )
 
@@ -231,13 +229,11 @@ def main():
         default="/tmp/full-harbor/corpus",
         help="Path to corpus directory",
     )
-    parser.add_argument("--db-path", default=None)
     args = parser.parse_args()
 
     generator = BoardReportGenerator(
         club_slug=args.club,
         corpus_dir=Path(args.corpus_dir) if args.corpus_dir else None,
-        db_path=args.db_path,
     )
     memo = generator.generate(topic=args.topic, addressee=args.to)
     print(memo.to_text())

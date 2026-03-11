@@ -23,7 +23,6 @@ from __future__ import annotations
 
 import os
 import json
-import sqlite3
 import logging
 import argparse
 import numpy as np
@@ -31,6 +30,12 @@ from pathlib import Path
 from typing import Optional
 
 from openai import OpenAI
+
+try:
+    from supabase import create_client as _supabase_create_client
+    _SUPABASE_AVAILABLE = True
+except ImportError:
+    _SUPABASE_AVAILABLE = False
 
 logger = logging.getLogger(__name__)
 
@@ -156,31 +161,34 @@ class SimpleVectorStore:
 
 class FinancialDataClient:
     """
-    Reads 990 financial data from the Harbor Commons SQLite database.
-    Falls back gracefully if the database is unavailable.
-    In production, this would query Supabase (sailing_filer_core etc.).
+    Reads 990 financial data from the Harbor Commons Supabase database.
+
+    Queries the sailing_filer_core table (populated by harbor_ingest).
+    Falls back gracefully when SUPABASE_URL / SUPABASE_SERVICE_KEY are not set.
+
+    Environment variables:
+        SUPABASE_URL         — Supabase project URL
+        SUPABASE_SERVICE_KEY — service_role key (full access; Club Steward is internal/premium)
     """
 
-    def __init__(self, db_path: Optional[str] = None):
-        self.db_path = db_path or os.environ.get(
-            "HARBOR_COMMONS_DB",
-            "/tmp/full-harbor/harbor_commons.db",
-        )
-        self._conn: Optional[sqlite3.Connection] = None
-
-    def _connect(self) -> Optional[sqlite3.Connection]:
-        if self._conn:
-            return self._conn
-        if not Path(self.db_path).exists():
-            return None
+    def __init__(self):
+        url = os.environ.get("SUPABASE_URL", "")
+        key = os.environ.get("SUPABASE_SERVICE_KEY", "")
+        self._db = None
+        if not _SUPABASE_AVAILABLE:
+            logger.warning("supabase package not installed — financial data unavailable.")
+            return
+        if not url or not key:
+            logger.warning(
+                "SUPABASE_URL or SUPABASE_SERVICE_KEY not set — "
+                "financial data unavailable. Set both env vars for Club Steward to "
+                "query Harbor Commons 990 data."
+            )
+            return
         try:
-            conn = sqlite3.connect(self.db_path)
-            conn.row_factory = sqlite3.Row
-            self._conn = conn
-            return conn
-        except sqlite3.Error as exc:
-            logger.warning("Cannot open Harbor Commons DB at %s: %s", self.db_path, exc)
-            return None
+            self._db = _supabase_create_client(url, key)
+        except Exception as exc:  # noqa: BLE001
+            logger.error("Could not connect to Supabase: %s", exc)
 
     def get_club_financials(
         self,
@@ -189,23 +197,19 @@ class FinancialDataClient:
     ) -> list[dict]:
         """Return up to `tax_years` most-recent 990 records for this club."""
         ein = KNOWN_CLUB_EINS.get(club_slug)
-        if not ein:
-            return []
-        conn = self._connect()
-        if not conn:
+        if not ein or not self._db:
             return []
         try:
-            rows = conn.execute(
-                """
-                SELECT * FROM club_financials
-                WHERE ein = ?
-                ORDER BY tax_year DESC
-                LIMIT ?
-                """,
-                (ein, tax_years),
-            ).fetchall()
-            return [dict(r) for r in rows]
-        except sqlite3.Error as exc:
+            result = (
+                self._db.table("sailing_filer_core")
+                .select("*")
+                .eq("ein", ein)
+                .order("tax_year", desc=True)
+                .limit(tax_years)
+                .execute()
+            )
+            return result.data or []
+        except Exception as exc:  # noqa: BLE001
             logger.warning("Financial query failed: %s", exc)
             return []
 
@@ -217,35 +221,22 @@ class FinancialDataClient:
     ) -> list[dict]:
         """Return peer club financials from the same state for benchmarking."""
         own_ein = KNOWN_CLUB_EINS.get(club_slug, "")
-        conn = self._connect()
-        if not conn:
+        if not self._db:
             return []
         try:
+            query = (
+                self._db.table("sailing_filer_core")
+                .select("*")
+                .eq("state", state)
+                .neq("ein", own_ein)
+                .order("total_revenue", desc=True)
+                .limit(10)
+            )
             if tax_year:
-                rows = conn.execute(
-                    """
-                    SELECT * FROM club_financials
-                    WHERE state = ?
-                      AND ein != ?
-                      AND tax_year = ?
-                    ORDER BY total_revenue DESC
-                    LIMIT 10
-                    """,
-                    (state, own_ein, tax_year),
-                ).fetchall()
-            else:
-                rows = conn.execute(
-                    """
-                    SELECT * FROM club_financials
-                    WHERE state = ?
-                      AND ein != ?
-                    ORDER BY tax_year DESC, total_revenue DESC
-                    LIMIT 10
-                    """,
-                    (state, own_ein),
-                ).fetchall()
-            return [dict(r) for r in rows]
-        except sqlite3.Error as exc:
+                query = query.eq("tax_year", tax_year)
+            result = query.execute()
+            return result.data or []
+        except Exception as exc:  # noqa: BLE001
             logger.warning("Peer benchmark query failed: %s", exc)
             return []
 
@@ -308,7 +299,6 @@ class ClubStewardAgent:
         self,
         club_slug: str,
         corpus_dir: Optional[Path] = None,
-        db_path: Optional[str] = None,
         model: str = "gpt-4o-mini",
     ):
         if club_slug not in KNOWN_CLUB_EINS:
@@ -320,7 +310,7 @@ class ClubStewardAgent:
         self.model = model
         self._client: Optional[OpenAI] = None
         self.store = SimpleVectorStore()
-        self.financial_client = FinancialDataClient(db_path=db_path)
+        self.financial_client = FinancialDataClient()
 
         # Load corpus if available (optional — financial data works without corpus)
         if corpus_dir:
@@ -473,11 +463,6 @@ def main():
         default="/tmp/full-harbor/corpus",
         help="Path to corpus directory (optional)",
     )
-    parser.add_argument(
-        "--db-path",
-        default=None,
-        help="Path to Harbor Commons SQLite DB",
-    )
     parser.add_argument("--verbose", action="store_true")
     args = parser.parse_args()
 
@@ -485,7 +470,6 @@ def main():
     agent = ClubStewardAgent(
         club_slug=args.club,
         corpus_dir=corpus_dir,
-        db_path=args.db_path,
     )
 
     if args.question:
