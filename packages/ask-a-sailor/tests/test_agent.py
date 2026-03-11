@@ -150,7 +150,7 @@ def test_agent_answer_with_mocked_any_llm(seeded_corpus, monkeypatch):
 
     # Mock embedding — return a fixed vector so vector search falls back to first-N
     mock_emb_response = MagicMock()
-    mock_emb_response.data = [MagicMock(embedding=[0.1] * 128)]
+    mock_emb_response.data = [MagicMock(embedding=[0.1] * 1536)]
     monkeypatch.setattr("rag.agent.embedding", lambda **kwargs: mock_emb_response)
 
     # Mock completion — return a canned answer
@@ -176,7 +176,7 @@ def test_agent_respects_llm_model_env(seeded_corpus, monkeypatch):
     monkeypatch.setenv("LLM_MODEL", "mistral-small-latest")
 
     mock_emb_response = MagicMock()
-    mock_emb_response.data = [MagicMock(embedding=[0.1] * 128)]
+    mock_emb_response.data = [MagicMock(embedding=[0.1] * 1536)]
     monkeypatch.setattr("rag.agent.embedding", lambda **kwargs: mock_emb_response)
 
     mock_choice = MagicMock()
