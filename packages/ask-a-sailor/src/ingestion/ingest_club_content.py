@@ -168,34 +168,25 @@ def ingest_website(
     return docs
 
 
-def ingest_newsletters(club_slug: str, newsletter_dir: Path) -> list[ClubDocument]:
+def ingest_newsletters(club_slug: str, newsletter_dir: Path) -> list[dict]:
     """
-    Ingest pre-parsed newsletter text files.
+    Ingest pre-parsed newsletter text files using NewsletterLoader.
+
+    Uses section-aware chunking (by heading type) rather than arbitrary
+    character-count splitting.  Returns RAG-ready chunk dicts directly.
+
     Expects: newsletter_dir/{club_slug}/*.txt  (one file per issue)
     The LYC Seahorse newsletters were already parsed — point here.
     """
-    club_dir = newsletter_dir / club_slug
-    if not club_dir.exists():
-        print(f"  ℹ️  No newsletter dir found at {club_dir}")
-        return []
+    try:
+        from ingestion.newsletter_loader import NewsletterLoader  # when imported as module
+    except ImportError:
+        # Fallback for direct script execution (python3 ingest_club_content.py)
+        from newsletter_loader import NewsletterLoader  # type: ignore[no-redef]
 
-    docs = []
-    for fpath in sorted(club_dir.glob("*.txt")):
-        content = fpath.read_text(encoding="utf-8")
-        if not content.strip():
-            continue
-        issue_name = fpath.stem  # e.g., "seahorse-newsletter-2025-09"
-        docs.append(ClubDocument(
-            doc_id=make_doc_id(club_slug, str(fpath)),
-            club_slug=club_slug,
-            source_type="newsletter",
-            source_url=str(fpath),
-            title=f"{club_slug.upper()} Newsletter: {issue_name}",
-            content=content,
-            metadata={"issue": issue_name},
-        ))
-        print(f"  Loaded newsletter: {fpath.name}")
-    return docs
+    loader = NewsletterLoader(newsletter_dir, club_slug)
+    chunks = loader.load_all()
+    return chunks
 
 
 def ingest_structured_data(club_slug: str) -> list[ClubDocument]:
@@ -412,9 +403,10 @@ def main():
             print("\n[Website]")
             all_docs.extend(ingest_website(club_slug, include_general=True))
 
+        newsletter_chunks: list[dict] = []
         if "newsletters" in sources:
             print("\n[Newsletters]")
-            all_docs.extend(ingest_newsletters(club_slug, newsletter_dir))
+            newsletter_chunks.extend(ingest_newsletters(club_slug, newsletter_dir))
 
         if "structured" in sources:
             print("\n[Structured Audit Data]")
@@ -422,10 +414,14 @@ def main():
 
         print(f"\n  Total documents: {len(all_docs)}")
 
-        # Chunk
-        all_chunks = []
+        # Chunk regular (non-newsletter) documents
+        all_chunks: list[dict] = []
         for doc in all_docs:
             all_chunks.extend(chunk_document(doc))
+
+        # Newsletter chunks are already section-split by NewsletterLoader
+        all_chunks.extend(newsletter_chunks)
+
         print(f"  Total chunks: {len(all_chunks)}")
 
         # Optionally embed
