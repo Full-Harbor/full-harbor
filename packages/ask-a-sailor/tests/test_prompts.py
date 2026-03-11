@@ -226,5 +226,8 @@ class TestSocialStorySchema:
             disclosure_intent=DisclosureIntent.explicit,
         )
         data = story.model_dump()
+        # Enum values serialise as their string values, not member names
+        assert data["tone_preset"] == "matter-of-fact"
+        assert data["disclosure_intent"] == "explicit"
         restored = SocialStory(**data)
         assert restored == story
